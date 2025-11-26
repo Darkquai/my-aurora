@@ -22,7 +22,7 @@ modules:
         - pv
         - virt-manager
         - gparted
-        - "@virtualization"
+        - \\@virtualization
     remove:
       packages:
         - firefox
