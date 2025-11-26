@@ -27,7 +27,6 @@ modules:
       packages:
         - firefox
         - firefox-langpacks
-
   - type: default-flatpaks
     configurations:
       - notify: true
@@ -53,46 +52,40 @@ modules:
           - com.github.tchx84.Flatseal
           - org.gnome.Ptyxis
       - scope: user
-
   # FIXED: This is now correctly un-indented (Outside of flatpaks)
   - type: homebrew
       # Define the Taps (Repositories)
-      taps:
-        - charmbracelet/tap
-        - gptscript-ai/tap
-        - blockprotocol/tap
-      install:
-        # Core Tools
-        - uv
-        - ripgrep
-        - bat
-        - eza
-        - fzf
-        - zoxide
-        - walk
-        - syft
-        - yq
-        # AI Suite
-        - aichat
-        - block-goose-cli
-        - gemini-cli
-        - mods
-        - ramalama
-        - llm
-        - qwen-code
-        - whisper-cpp
-        - opencode
-
-        # --- The Specific Taps you found ---
-        - gptscript-ai/tap/clio   # Explicit path found in your research
-        - charmbracelet/tap/crush # Explicit path found in your research
-
-        # Note: Codex is excluded because it is a 'Cask' (Mac format).
-
-
-
-  # FIXED: Removed ramalama.service (it doesn't exist).
-  # scout.service and oracle.service are Quadlets, so they auto-start without being listed here.
+    taps:
+      - charmbracelet/tap
+      - gptscript-ai/tap
+      - blockprotocol/tap
+    install:
+      # Core Tools
+      - uv
+      - ripgrep
+      - bat
+      - eza
+      - fzf
+      - zoxide
+      - walk
+      - syft
+      - yq
+      # AI Suite
+      - aichat
+      - block-goose-cli
+      - gemini-cli
+      - mods
+      - ramalama
+      - llm
+      - qwen-code
+      - whisper-cpp
+      - opencode
+      # --- The Specific Taps you found ---
+      - gptscript-ai/tap/clio   # Explicit path found in your research
+      - charmbracelet/tap/crush # Explicit path found in your research
+      # Note: Codex is excluded because it is a 'Cask' (Mac format).
+      # FIXED: Removed ramalama.service (it doesn't exist).
+      # scout.service and oracle.service are Quadlets, so they auto-start without being listed here.
   - type: systemd
     system:
       enabled:
