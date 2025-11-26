@@ -1,0 +1,19 @@
+[Unit]
+Description=Darkquai Scout Swarm (vLLM GPU Server)
+After=network-online.target local-fs.target
+Wants=network-online.target
+
+[Container]
+Image=docker.io/vllm/vllm-openai:latest
+PublishPort=8081:8000
+EnvironmentFile=/etc/vllm/scout.env
+PodmanArgs=--device nvidia.com/gpu=all --shm-size=4g
+Exec=--model $MODEL_NAME --gpu-memory-utilization $GPU_MEMORY_UTILIZATION --max-num-seqs $MAX_NUM_SEQS --dtype $DTYPE --block-size $BLOCK_SIZE --port $PORT
+AutoUpdate=registry
+
+[Service]
+Restart=always
+TimeoutStartSec=900
+
+[Install]
+WantedBy=default.target
