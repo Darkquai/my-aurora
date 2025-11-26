@@ -1,20 +1,15 @@
 # yaml-language-server: $schema=https://schema.blue-build.org/recipe-v1.json
-# image will be published to ghcr.io/<user>/<name>
 name: my-aurora
-# description will be included in the image's metadata
 description: This is my personal OS image.
 
-# the base image to build on top of (FROM) and the version tag to use
 base-image: ghcr.io/ublue-os/aurora-dx-nvidia-open
-image-version: latest # latest is also supported if you want new updates ASAP
+image-version: latest
 
-# module configuration, executed in order
-# you can include multiple instances of the same module
 modules:
   - type: files
     files:
       - source: system
-        destination: / # copies files/system/* (* means everything inside it) into your image's root folder /
+        destination: /
 
   - type: dnf
     repos:
@@ -27,6 +22,7 @@ modules:
         - pv
         - virt-manager
         - gparted
+        - @virtualization
     remove:
       packages:
         - firefox
@@ -49,6 +45,59 @@ modules:
           - io.github.shiftey.Desktop
           - org.openscad.OpenSCAD
           - com.wings3d.WINGS
+          # DX Apps
+          - com.visualstudio.code
+          - io.podman_desktop.PodmanDesktop
+          - com.raggesilver.BlackBox
+          - org.gnome.Boxes
+          - com.github.tchx84.Flatseal
+          - org.gnome.Ptyxis
       - scope: user
+
+  # FIXED: This is now correctly un-indented (Outside of flatpaks)
+  - type: homebrew
+      # Define the Taps (Repositories)
+      taps:
+        - charmbracelet/tap
+        - gptscript-ai/tap
+        - blockprotocol/tap
+      install:
+        # Core Tools
+        - uv
+        - ripgrep
+        - bat
+        - eza
+        - fzf
+        - zoxide
+        - walk
+        - syft
+        - yq
+        # AI Suite
+        - aichat
+        - block-goose-cli
+        - gemini-cli
+        - mods
+        - ramalama
+        - llm
+        - qwen-code
+        - whisper-cpp
+        - opencode
+
+        # --- The Specific Taps you found ---
+        - gptscript-ai/tap/clio   # Explicit path found in your research
+        - charmbracelet/tap/crush # Explicit path found in your research
+
+        # Note: Codex is excluded because it is a 'Cask' (Mac format).
+
+
+
+  # FIXED: Removed ramalama.service (it doesn't exist).
+  # scout.service and oracle.service are Quadlets, so they auto-start without being listed here.
+  - type: systemd
+    system:
+      enabled:
+        - docker.service
+        - podman.socket
+        - libvirtd.service
 
   - type: signing
