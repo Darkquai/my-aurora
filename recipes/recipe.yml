@@ -56,7 +56,7 @@ modules:
 
   - type: homebrew
     # Taps (Repositories)
-    taps:
+    install:
       - brew install charmbracelet/tap
       - brew install gptscript-ai/tap
       - brew install blockprotocol/tap
