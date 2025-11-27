@@ -1,0 +1,92 @@
+# yaml-language-server: $schema=https://schema.blue-build.org/recipe-v1.json
+name: my-aurora
+description: this is my personal os image.
+base-image: ghcr.io/ublue-os/aurora-dx-nvidia-open
+image-version: latest
+
+modules:
+  - type: files
+    files:
+      - source: system
+      destination: /
+
+  - type: dnf
+    repos:
+      copr:
+      - atim/starship
+    install:
+      packages:
+      - micro
+      - starship
+      - pv
+      - virt-manager
+      - gparted
+      - '@virtualization'
+    remove:
+      packages:
+      - firefox
+      - firefox-langpacks
+
+  - type: default-flatpaks
+    configurations:
+      - notify: true
+      scope: system
+      install:
+        - org.mozilla.firefox
+        - org.gnome.loupe
+        - com.jeffser.alpaca
+        - org.blender.blender
+        - com.bambulab.bambustudio
+        - org.freecadweb.freecad
+        - org.gimp.gimp
+        - org.videolan.vlc
+        - org.jupyter.jupyterlab
+        - io.github.shiftey.desktop
+        - org.openscad.openscad
+        - com.wings3d.wings
+        # dx apps
+        - com.visualstudio.code
+        - io.podman_desktop.podmandesktop
+        - com.raggesilver.blackbox
+        - org.gnome.boxes
+        - com.github.tchx84.flatseal
+        - org.gnome.ptyxis
+      - scope: user
+  - type: homebrew
+    install:
+      - charmbracelet/tap/ # <-- INCORRECT (formula included)
+      - blockprotocol/tap/ # <-- INCORRECT (formula included)
+      - gptscript-ai/tap/
+      install:
+      scope: user
+      # --- Core Tools ---
+      - brew install uv
+      - brew install ripgrep
+      - brew install bat
+      - brew install ez
+      - brew install fzf
+      - brew install zoxide
+      - brew install walk
+      - brew install syft
+      - brew install yq
+      # --- AI Suite ---
+      - brew install aichat
+      - brew install gemini-cli
+      - brew install ramalama
+      - brew install llm
+      - brew install qwen-code
+      - brew install whisper-cpp
+      - brew install opencode
+      # --- Tapped Tools (Fully Qualified Names) ---
+      - brew install block-goose-cli  # (Was under taps)
+      - brew install clio            # (Was under taps)
+      - brew install crush          # (Was under taps)
+      - brew install mods           # (Fixed typo: modsmods -> mods)
+  - type: systemd
+    system:
+      enabled:
+      - docker.service
+      - podman.socket
+      - libvirtd.service
+
+  - type: signing

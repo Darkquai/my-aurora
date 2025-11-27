@@ -1,6 +1,7 @@
 # yaml-language-server: $schema=https://schema.blue-build.org/recipe-v1.json
 name: my-aurora
-description: this is my personal os image.
+description: This is my personal OS image.
+
 base-image: ghcr.io/ublue-os/aurora-dx-nvidia-open
 image-version: latest
 
@@ -21,7 +22,7 @@ modules:
         - pv
         - virt-manager
         - gparted
-        - '@virtualization'
+        - "@virtualization"
     remove:
       packages:
         - firefox
@@ -33,56 +34,52 @@ modules:
         scope: system
         install:
           - org.mozilla.firefox
-          - org.gnome.loupe
-          - com.jeffser.alpaca
-          - org.blender.blender
-          - com.bambulab.bambustudio
-          - org.freecadweb.freecad
-          - org.gimp.gimp
-          - org.videolan.vlc
-          - org.jupyter.jupyterlab
-          - io.github.shiftey.desktop
-          - org.openscad.openscad
-          - com.wings3d.wings
-          # dx apps
+          - org.gnome.Loupe
+          - com.jeffser.Alpaca
+          - org.blender.Blender
+          - com.bambulab.BambuStudio
+          - org.freecadweb.FreeCAD
+          - org.gimp.GIMP
+          - org.videolan.VLC
+          - org.jupyter.JupyterLab
+          - io.github.shiftey.Desktop
+          - org.openscad.OpenSCAD
+          - com.wings3d.WINGS
+          # DX Apps
           - com.visualstudio.code
-          - io.podman_desktop.podmandesktop
-          - com.raggesilver.blackbox
-          - org.gnome.boxes
-          - com.github.tchx84.flatseal
-          - org.gnome.ptyxis
+          - io.podman_desktop.PodmanDesktop
+          - com.raggesilver.BlackBox
+          - org.gnome.Boxes
+          - com.github.tchx84.Flatseal
+          - org.gnome.Ptyxis
       - scope: user
-        install:
-          []
+
   - type: homebrew
-        taps:
-        - charmbracelet/tap/ # <-- INCORRECT (formula included)
-        - blockprotocol/tap/ # <-- INCORRECT (formula included)
-        - gptscript-ai/tap/
-        install:
-        # --- Core Tools ---
-        - brew install uv
-        - brew install ripgrep
-        - brew install bat
-        - brew install ez
-        - brew install fzf
-        - brew install zoxide
-        - brew install walk
-        - brew install syft
-        - brew install yq
-        # --- AI Suite ---
-        - brew install aichat
-        - brew install gemini-cli
-        - brew install ramalama
-        - brew install llm
-        - brew install qwen-code
-        - brew install whisper-cpp
-        - brew install opencode
-        # --- Tapped Tools (Fully Qualified Names) ---
-        - brew install block-goose-cli  # (Was under taps)
-        - brew install clio              # (Was under taps)
-        - brew install crush            # (Was under taps)
-        - brew install mods             # (Fixed typo: modsmods -> mods)
+    install:
+      # Core Tools
+      - uv
+      - ripgrep
+      - bat
+      - eza
+      - fzf
+      - zoxide
+      - walk
+      - syft
+      - yq
+      # AI Suite
+      - aichat
+      - gemini-cli
+      - ramalama
+      - llm
+      - qwen-code
+      - whisper-cpp
+      - opencode
+      # Tapped Tools (Full Names)
+      - blockprotocol/tap/block-goose-cli
+      - gptscript-ai/tap/clio
+      - charmbracelet/tap/crush
+      - charmbracelet/tap/mods
+
   - type: systemd
     system:
       enabled:
