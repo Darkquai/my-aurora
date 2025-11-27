@@ -6,12 +6,12 @@ base-image: ghcr.io/ublue-os/aurora-dx-nvidia-open
 image-version: latest
 
 modules:
- - type: files
+  - type: files
     files:
     - source: system
-        destination: /
+      destination: /
 
- - type: dnf
+  - type: dnf
     repos:
     copr:
         - atim/starship
@@ -28,7 +28,7 @@ modules:
         - firefox
         - firefox-langpacks
 
- - type: default-flatpaks
+  - type: default-flatpaks
     configurations:
     - notify: true
         scope: system
@@ -53,13 +53,13 @@ modules:
         - com.github.tchx84.Flatseal
         - org.gnome.Ptyxis
     - scope: user
-
- - type: homebrew
+        []
+  - type: homebrew
     # Taps (Repositories)
     install:
-        #- brew install charmbracelet/tap
-        #- brew install gptscript-ai/tap
-        #- brew install blockprotocol/tap
+        - brew install charmbracelet/tap
+        - brew install gptscript-ai/tap
+        - brew install blockprotocol/tap
         # Packages (Use 'pkgs' for strict schema compliance)
     packages:
         - brew install uv
