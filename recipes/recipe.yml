@@ -57,32 +57,32 @@ modules:
   - type: homebrew
     # Taps (Repositories)
     taps:
-      - charmbracelet/tap
-      - gptscript-ai/tap
-      - blockprotocol/tap
+      - brew install charmbracelet/tap
+      - brew install gptscript-ai/tap
+      - brew install blockprotocol/tap
 
     # Packages (Use 'pkgs' for strict schema compliance)
     pkgs:
-      - uv
-      - ripgrep
-      - bat
-      - eza
-      - fzf
-      - zoxide
-      - walk
-      - syft
-      - yq
-      - aichat
-      - block-goose-cli
-      - gemini-cli
-      - mods
-      - ramalama
-      - llm
-      - opencode
-      - qwen-code
-      - whisper-cpp
-      - clio
-      - crush
+      - brew install uv
+      - brew install ripgrep
+      - brew install bat
+      - brew install eza
+      - brew install fzf
+      - brew install zoxide
+      - brew install walk
+      - brew install syft
+      - brew install yq
+      - brew install aichat
+      - brew install block-goose-cli
+      - brew install gemini-cli
+      - brew install mods
+      - brew install ramalama
+      - brew install llm
+      - brew install opencode
+      - brew install qwen-code
+      - brew install whisper-cpp
+      - brew install clio
+      - brew install crush
 
   - type: systemd
     system:
