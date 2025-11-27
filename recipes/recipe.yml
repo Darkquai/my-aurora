@@ -53,8 +53,12 @@ modules:
           - org.gnome.Ptyxis
       - scope: user
 
-  # FIXED: Changed 'homebrew' to 'brew' (The correct module name)
+  # CORRECTION: Module name must be 'brew'
   - type: brew
+    taps:
+      - charmbracelet/tap
+      - gptscript-ai/tap
+      - blockprotocol/tap
     install:
       - uv
       - ripgrep
@@ -74,8 +78,9 @@ modules:
       - opencode
       - qwen-code
       - whisper-cpp
-      - gptscript-ai/tap/clio
-      - charmbracelet/tap/crush
+      # Simplified names (Taps are defined above)
+      - clio
+      - crush
 
   - type: systemd
     system:
