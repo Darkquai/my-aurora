@@ -57,7 +57,7 @@ modules:
   - type: homebrew
     # Taps (Repositories)
     install:
-    packages:
+      packages:
         - brew install uv
         - brew install ripgrep
         - brew install bat
