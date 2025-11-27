@@ -57,7 +57,6 @@ modules:
       - charmbracelet/tap/ # <-- INCORRECT (formula included)
       - blockprotocol/tap/ # <-- INCORRECT (formula included)
       - gptscript-ai/tap/
-      install:
       scope: user
       # --- Core Tools ---
       - brew install uv
