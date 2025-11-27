@@ -1,6 +1,7 @@
 # yaml-language-server: $schema=https://schema.blue-build.org/recipe-v1.json
 name: my-aurora
-description: this is my personal os image.
+description: This is my personal OS image.
+
 base-image: ghcr.io/ublue-os/aurora-dx-nvidia-open
 image-version: latest
 
@@ -8,82 +9,86 @@ modules:
   - type: files
     files:
       - source: system
-      destination: /
+        destination: /
 
   - type: dnf
     repos:
       copr:
-      - atim/starship
+        - atim/starship
     install:
       packages:
-      - micro
-      - starship
-      - pv
-      - virt-manager
-      - gparted
-      - '@virtualization'
+        - micro
+        - starship
+        - pv
+        - virt-manager
+        - gparted
+        - '@virtualization'
     remove:
       packages:
-      - firefox
+        - firefox
+        - firefox-langpacks
 
   - type: default-flatpaks
     configurations:
       - notify: true
-      scope: system
-      install:
-        - org.mozilla.firefox
-        - org.gnome.loupe
-        - com.jeffser.alpaca
-        - org.blender.blender
-        - com.bambulab.bambustudio
-        - org.freecadweb.freecad
-        - org.gimp.gimp
-        - org.videolan.vlc
-        - org.jupyter.jupyterlab
-        - io.github.shiftey.desktop
-        - org.openscad.openscad
-        - com.wings3d.wings
-        # dx apps
-        - com.visualstudio.code
-        - io.podman_desktop.podmandesktop
-        - com.raggesilver.blackbox
-        - org.gnome.boxes
-        - com.github.tchx84.flatseal
-        - org.gnome.ptyxis
+        scope: system
+        install:
+          - org.mozilla.firefox
+          - org.gnome.Loupe
+          - com.jeffser.Alpaca
+          - org.blender.Blender
+          - com.bambulab.BambuStudio
+          - org.freecadweb.FreeCAD
+          - org.gimp.GIMP
+          - org.videolan.VLC
+          - org.jupyter.JupyterLab
+          - io.github.shiftey.Desktop
+          - org.openscad.OpenSCAD
+          - com.wings3d.WINGS
+          # DX Apps
+          - com.visualstudio.code
+          - io.podman_desktop.PodmanDesktop
+          - com.raggesilver.BlackBox
+          - org.gnome.Boxes
+          - com.github.tchx84.Flatseal
+          - org.gnome.Ptyxis
       - scope: user
+
   - type: homebrew
-    install:
-      - charmbracelet/tap/ # <-- INCORRECT (formula included)
-      - blockprotocol/tap/ # <-- INCORRECT (formula included)
-      - gptscript-ai/tap/
-      # --- Core Tools ---
-      - brew install uv
-      - brew install ripgrep
-      - brew install bat
-      - brew install ez
-      - brew install fzf
-      - brew install zoxide
-      - brew install walk
-      - brew install syft
-      - brew install yq
-      # --- AI Suite ---
-      - brew install aichat
-      - brew install gemini-cli
-      - brew install ramalama
-      - brew install llm
-      - brew install qwen-code
-      - brew install whisper-cpp
-      - brew install opencode
-      # --- Tapped Tools (Fully Qualified Names) ---
-      - brew install block-goose-cli  # (Was under taps)
-      - brew install clio            # (Was under taps)
-      - brew install crush          # (Was under taps)
-      - brew install mods           # (Fixed typo: modsmods -> mods)
+    # Taps (Repositories)
+    taps:
+      - charmbracelet/tap
+      - gptscript-ai/tap
+      - blockprotocol/tap
+
+    # Packages (Use 'pkgs' for strict schema compliance)
+    pkgs:
+      - uv
+      - ripgrep
+      - bat
+      - eza
+      - fzf
+      - zoxide
+      - walk
+      - syft
+      - yq
+      - aichat
+      - block-goose-cli
+      - gemini-cli
+      - mods
+      - ramalama
+      - llm
+      - opencode
+      - qwen-code
+      - whisper-cpp
+      - clio
+      - crush
+
   - type: systemd
     system:
       enabled:
-      - docker.service
-      - podman.socket
-      - libvirtd.service
+        - docker.service
+        - podman.socket
+        - libvirtd.service
 
   - type: signing
