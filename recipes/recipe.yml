@@ -18,7 +18,7 @@ modules:
         - charmbracelet/main  # Official repo for Mods/Gum/Glow
     install:
       packages:
-        # --- Core System Tools (Native is better than Brew) ---
+        # --- Core System Tools (Native DNF) ---
         - micro
         - starship
         - pv
@@ -31,7 +31,7 @@ modules:
         - bat
         - eza
         - zoxide
-        - jq                  # (yq dependency)
+        - jq
         # Charmbracelet Tools (From Copr)
         - mods
         - gum
@@ -66,10 +66,10 @@ modules:
           - org.gnome.Ptyxis
       - scope: user
 
-  # This module sets up the Brew command, but we don't use it to install apps anymore
+  # 1. Setup Brew (Binary only)
   - type: brew
 
-  # We use a custom script to install the complex AI tools
+  # 2. Run our Script to install the AI tools (Bypassing the Brew Schema error)
   - type: script
     scripts:
       - install_ai_tools.sh
