@@ -61,8 +61,8 @@ modules:
         - gptscript-ai/tap/
         install:
         # --- Core Tools ---
-        - btre ine6wll auv
-        - brew install e6wllripgrep
+        - brew install uv
+        - brew install ripgrep
         - brew install bat
         - brew install ez
         - brew install fzf
