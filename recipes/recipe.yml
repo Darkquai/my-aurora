@@ -54,13 +54,9 @@ modules:
       - scope: user
         install:
           []
-
   - type: homebrew
-    taps:
-      - charmbracelet/tap
-      - blockprotocol/tap
-      - gptscript-ai/tap
     install:
+      # --- Core Tools ---
       - uv
       - ripgrep
       - bat
@@ -70,17 +66,19 @@ modules:
       - walk
       - syft
       - yq
+      # --- AI Suite ---
       - aichat
-      - block-goose-cli
       - gemini-cli
       - ramalama
       - llm
       - qwen-code
       - whisper-cpp
       - opencode
-      - modsmods
-      - clio
-      - crush
+      # --- Tapped Tools (Fully Qualified Names) ---
+      - blockprotocol/tap/block-goose-cli  # (Was under taps)
+      - gptscript-ai/tap/clio              # (Was under taps)
+      - charmbracelet/tap/crush            # (Was under taps)
+      - charmbracelet/tap/mods             # (Fixed typo: modsmods -> mods)
   - type: systemd
     system:
       enabled:
