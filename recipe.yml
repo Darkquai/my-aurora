@@ -57,11 +57,9 @@ modules:
 - type: homebrew
     # Taps (Repositories)
     install:
-      scope: user
-        - brew install charmbracelet/tap
-        - brew install gptscript-ai/tap
-        - brew install blockprotocol/tap
-
+        #- brew install charmbracelet/tap
+        #- brew install gptscript-ai/tap
+        #- brew install blockprotocol/tap
         # Packages (Use 'pkgs' for strict schema compliance)
     packages:
         - brew install uv
@@ -82,9 +80,9 @@ modules:
         - brew install opencode
         - brew install qwen-code
         - brew install whisper-cpp
-        - brew install clio
-        - brew install crush
-
+        - brew install gptscript-ai/tap/clio
+        - brew install charmbracelet/tap/crush
+        - brew install --cask codex
   - type: systemd
     system:
       enabled:
