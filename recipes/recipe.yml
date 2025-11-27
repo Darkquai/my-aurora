@@ -11,7 +11,7 @@ modules:
       - source: system
         destination: /
 
-  - type: rpm-ostree
+  - type: dnf
     repos:
       copr:
         - atim/starship
@@ -23,8 +23,6 @@ modules:
         - virt-manager
         - gparted
         - "@virtualization"
-        # REMOVED: brew-update & brew-upgrade (Invalid package name)
-        # REMOVED: brew_setup (Invalid package name)
     remove:
       packages:
         - firefox
@@ -47,7 +45,6 @@ modules:
           - io.github.shiftey.Desktop
           - org.openscad.OpenSCAD
           - com.wings3d.WINGS
-          # DX Apps
           - com.visualstudio.code
           - io.podman_desktop.PodmanDesktop
           - com.raggesilver.BlackBox
@@ -57,7 +54,6 @@ modules:
       - scope: user
 
   - type: homebrew
-    # FIXED: Removed the extra 'packages:' line that was causing the error
     install:
       - uv
       - ripgrep
@@ -77,10 +73,8 @@ modules:
       - opencode
       - qwen-code
       - whisper-cpp
-      # Taps
       - gptscript-ai/tap/clio
       - charmbracelet/tap/crush
-      # REMOVED: --cask codex (This is Mac only and will break the build)
 
   - type: systemd
     system:
