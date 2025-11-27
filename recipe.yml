@@ -53,7 +53,7 @@ modules:
         - com.github.tchx84.Flatseal
         - org.gnome.Ptyxis
     - scope: user
-        []
+      install: []
   - type: homebrew
     # Taps (Repositories)
     install:
