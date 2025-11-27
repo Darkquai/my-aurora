@@ -81,3 +81,11 @@ modules:
       - modsmods
       - clio
       - crush
+  - type: systemd
+    system:
+      enabled:
+        - docker.service
+        - podman.socket
+        - libvirtd.service
+
+  - type: signing
