@@ -8,81 +8,80 @@ image-version: latest
 modules:
   - type: files
     files:
-    - source: system
-      destination: /
+      - source: system
+        destination: /
 
-  - type: dnf
+  - type: rpm-ostree
     repos:
-    copr:
+      copr:
         - atim/starship
     install:
-    packages:
+      packages:
         - micro
         - starship
         - pv
         - virt-manager
         - gparted
         - "@virtualization"
+        # REMOVED: brew-update & brew-upgrade (Invalid package name)
+        # REMOVED: brew_setup (Invalid package name)
     remove:
-    packages:
+      packages:
         - firefox
         - firefox-langpacks
 
   - type: default-flatpaks
     configurations:
-    - notify: true
+      - notify: true
         scope: system
         install:
-        - org.mozilla.firefox
-        - org.gnome.Loupe
-        - com.jeffser.Alpaca
-        - org.blender.Blender
-        - com.bambulab.BambuStudio
-        - org.freecadweb.FreeCAD
-        - org.gimp.GIMP
-        - org.videolan.VLC
-        - org.jupyter.JupyterLab
-        - io.github.shiftey.Desktop
-        - org.openscad.OpenSCAD
-        - com.wings3d.WINGS
-        # DX Apps
-        - com.visualstudio.code
-        - io.podman_desktop.PodmanDesktop
-        - com.raggesilver.BlackBox
-        - org.gnome.Boxes
-        - com.github.tchx84.Flatseal
-        - org.gnome.Ptyxis
-    - scope: user
-      install: []
+          - org.mozilla.firefox
+          - org.gnome.Loupe
+          - com.jeffser.Alpaca
+          - org.blender.Blender
+          - com.bambulab.BambuStudio
+          - org.freecadweb.FreeCAD
+          - org.gimp.GIMP
+          - org.videolan.VLC
+          - org.jupyter.JupyterLab
+          - io.github.shiftey.Desktop
+          - org.openscad.OpenSCAD
+          - com.wings3d.WINGS
+          # DX Apps
+          - com.visualstudio.code
+          - io.podman_desktop.PodmanDesktop
+          - com.raggesilver.BlackBox
+          - org.gnome.Boxes
+          - com.github.tchx84.Flatseal
+          - org.gnome.Ptyxis
+      - scope: user
+
   - type: homebrew
-    # Taps (Repositories)
+    # FIXED: Removed the extra 'packages:' line that was causing the error
     install:
-        - brew install charmbracelet/tap
-        - brew install gptscript-ai/tap
-        - brew install blockprotocol/tap
-        # Packages (Use 'pkgs' for strict schema compliance)
-    packages:
-        - brew install uv
-        - brew install ripgrep
-        - brew install bat
-        - brew install eza
-        - brew install fzf
-        - brew install zoxide
-        - brew install walk
-        - brew install syft
-        - brew install yq
-        - brew install aichat
-        - brew install block-goose-cli
-        - brew install gemini-cli
-        - brew install mods
-        - brew install ramalama
-        - brew install llm
-        - brew install opencode
-        - brew install qwen-code
-        - brew install whisper-cpp
-        - brew install gptscript-ai/tap/clio
-        - brew install charmbracelet/tap/crush
-        - brew install --cask codex
+      - uv
+      - ripgrep
+      - bat
+      - eza
+      - fzf
+      - zoxide
+      - walk
+      - syft
+      - yq
+      - aichat
+      - block-goose-cli
+      - gemini-cli
+      - mods
+      - ramalama
+      - llm
+      - opencode
+      - qwen-code
+      - whisper-cpp
+      # Taps
+      - gptscript-ai/tap/clio
+      - charmbracelet/tap/crush
+      # REMOVED: --cask codex (This is Mac only and will break the build)
+
   - type: systemd
     system:
       enabled:
