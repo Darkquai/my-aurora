@@ -55,11 +55,8 @@ modules:
   # FIXED: This is now correctly un-indented (Outside of flatpaks)
   - type: homebrew
       # Define the Taps (Repositories)
-    taps:
-      - charmbracelet/tap
-      - gptscript-ai/tap
-      - blockprotocol/tap
     install:
+
       # Core Tools
       - uv
       - ripgrep
@@ -74,7 +71,7 @@ modules:
       - aichat
       - block-goose-cli
       - gemini-cli
-      - mods
+      - charmbracelet/tap/modsmods
       - ramalama
       - llm
       - qwen-code
@@ -83,6 +80,9 @@ modules:
       # --- The Specific Taps you found ---
       - gptscript-ai/tap/clio   # Explicit path found in your research
       - charmbracelet/tap/crush # Explicit path found in your research
+      - charmbracelet/tap
+      - gptscript-ai/tap
+      - blockprotocol/tap/block-goose-cli
       # Note: Codex is excluded because it is a 'Cask' (Mac format).
       # FIXED: Removed ramalama.service (it doesn't exist).
       # scout.service and oracle.service are Quadlets, so they auto-start without being listed here.
