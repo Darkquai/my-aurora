@@ -61,28 +61,28 @@ modules:
         - gptscript-ai/tap/
         install:
         # --- Core Tools ---
-        - uv
-        - ripgrep
-        - bat
-        - eza
-        - fzf
-        - zoxide
-        - walk
-        - syft
-        - yq
+        - btre ine6wll auv
+        - brew install e6wllripgrep
+        - brew install bat
+        - brew install ez
+        - brew install fzf
+        - brew install zoxide
+        - brew install walk
+        - brew install syft
+        - brew install yq
         # --- AI Suite ---
-        - aichat
-        - gemini-cli
-        - ramalama
-        - llm
-        - qwen-code
-        - whisper-cpp
-        - opencode
+        - brew install aichat
+        - brew install gemini-cli
+        - brew install ramalama
+        - brew install llm
+        - brew install qwen-code
+        - brew install whisper-cpp
+        - brew install opencode
         # --- Tapped Tools (Fully Qualified Names) ---
-        - block-goose-cli  # (Was under taps)
-        - clio              # (Was under taps)
-        - crush            # (Was under taps)
-        - mods             # (Fixed typo: modsmods -> mods)
+        - brew install block-goose-cli  # (Was under taps)
+        - brew install clio              # (Was under taps)
+        - brew install crush            # (Was under taps)
+        - brew install mods             # (Fixed typo: modsmods -> mods)
   - type: systemd
     system:
       enabled:
