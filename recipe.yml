@@ -6,12 +6,12 @@ base-image: ghcr.io/ublue-os/aurora-dx-nvidia-open
 image-version: latest
 
 modules:
-- type: files
+ - type: files
     files:
     - source: system
         destination: /
 
-- type: dnf
+ - type: dnf
     repos:
     copr:
         - atim/starship
@@ -22,13 +22,13 @@ modules:
         - pv
         - virt-manager
         - gparted
-        - '@virtualization'
+        - "@virtualization"
     remove:
     packages:
         - firefox
         - firefox-langpacks
 
-- type: default-flatpaks
+ - type: default-flatpaks
     configurations:
     - notify: true
         scope: system
@@ -54,7 +54,7 @@ modules:
         - org.gnome.Ptyxis
     - scope: user
 
-- type: homebrew
+ - type: homebrew
     # Taps (Repositories)
     install:
         #- brew install charmbracelet/tap
