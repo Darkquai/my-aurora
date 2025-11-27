@@ -55,10 +55,6 @@ modules:
 
   # FIXED: Changed 'homebrew' to 'brew' (The correct module name)
   - type: brew
-    taps:
-      - charmbracelet/tap
-      - gptscript-ai/tap
-      - blockprotocol/tap
     install:
       - uv
       - ripgrep
