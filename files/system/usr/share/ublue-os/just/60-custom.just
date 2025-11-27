@@ -28,11 +28,6 @@ new-project name:
     @echo "✅ Project '{{name}}' ready."
 
 # @recipe
-init-enter-sys:
-    distrobox enter sys-core
-
-
-# @recipe
 init-brew-help:
     @echo "🍺 Homebrew Cheatsheet for Aurora"
     @echo "---------------------------------------------------"
