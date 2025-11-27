@@ -15,27 +15,22 @@ modules:
     repos:
       copr:
         - atim/starship
-        - charmbracelet/main  # Official repo for Mods/Gum/Glow
     install:
       packages:
-        # --- Core System Tools (Native DNF) ---
+        # --- Core System Tools ---
         - micro
         - starship
         - pv
         - virt-manager
         - gparted
         - "@virtualization"
-        # Moved from Brew -> DNF (Baked in!)
+        # --- Native Tools (That work in Fedora 43) ---
         - fzf
         - ripgrep
         - bat
         - eza
         - zoxide
         - jq
-        # Charmbracelet Tools (From Copr)
-        - mods
-        - gum
-        - glow
     remove:
       packages:
         - firefox
@@ -66,10 +61,9 @@ modules:
           - org.gnome.Ptyxis
       - scope: user
 
-  # 1. Setup Brew (Binary only)
   - type: brew
 
-  # 2. Run our Script to install the AI tools (Bypassing the Brew Schema error)
+  # The Script handles the AI tools + Charmbracelet tools
   - type: script
     scripts:
       - install_ai_tools.sh
