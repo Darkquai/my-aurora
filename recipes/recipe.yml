@@ -55,30 +55,34 @@ modules:
         install:
           []
   - type: homebrew
-    install:
-      # --- Core Tools ---
-      - uv
-      - ripgrep
-      - bat
-      - eza
-      - fzf
-      - zoxide
-      - walk
-      - syft
-      - yq
-      # --- AI Suite ---
-      - aichat
-      - gemini-cli
-      - ramalama
-      - llm
-      - qwen-code
-      - whisper-cpp
-      - opencode
-      # --- Tapped Tools (Fully Qualified Names) ---
-      - blockprotocol/tap/block-goose-cli  # (Was under taps)
-      - gptscript-ai/tap/clio              # (Was under taps)
-      - charmbracelet/tap/crush            # (Was under taps)
-      - charmbracelet/tap/mods             # (Fixed typo: modsmods -> mods)
+        taps:
+        - charmbracelet/tap/ # <-- INCORRECT (formula included)
+        - blockprotocol/tap/ # <-- INCORRECT (formula included)
+        - gptscript-ai/tap/
+        install:
+        # --- Core Tools ---
+        - uv
+        - ripgrep
+        - bat
+        - eza
+        - fzf
+        - zoxide
+        - walk
+        - syft
+        - yq
+        # --- AI Suite ---
+        - aichat
+        - gemini-cli
+        - ramalama
+        - llm
+        - qwen-code
+        - whisper-cpp
+        - opencode
+        # --- Tapped Tools (Fully Qualified Names) ---
+        - block-goose-cli  # (Was under taps)
+        - clio              # (Was under taps)
+        - crush            # (Was under taps)
+        - mods             # (Fixed typo: modsmods -> mods)
   - type: systemd
     system:
       enabled:
