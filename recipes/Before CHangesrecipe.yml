@@ -61,8 +61,13 @@ modules:
         install: [] # Added empty list to satisfy the schema requirements
 
   - type: homebrew
-    install:
-      packages:
+    # Taps must be listed here as 'user/repo'
+    taps:
+      - charmbracelet/tap
+      - gptscript-ai/tap
+      - blockprotocol/tap
+    # Packages should be listed here by name only
+    packages:
       - uv
       - ripgrep
       - bat
