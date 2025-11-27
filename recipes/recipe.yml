@@ -15,14 +15,27 @@ modules:
     repos:
       copr:
         - atim/starship
+        - charmbracelet/main  # Official repo for Mods/Gum/Glow
     install:
       packages:
+        # --- Core System Tools (Native is better than Brew) ---
         - micro
         - starship
         - pv
         - virt-manager
         - gparted
         - "@virtualization"
+        # Moved from Brew -> DNF (Baked in!)
+        - fzf
+        - ripgrep
+        - bat
+        - eza
+        - zoxide
+        - jq                  # (yq dependency)
+        # Charmbracelet Tools (From Copr)
+        - mods
+        - gum
+        - glow
     remove:
       packages:
         - firefox
@@ -53,34 +66,13 @@ modules:
           - org.gnome.Ptyxis
       - scope: user
 
-  # CORRECTION: Module name must be 'brew'
+  # This module sets up the Brew command, but we don't use it to install apps anymore
   - type: brew
-    taps:
-      - charmbracelet/tap
-      - gptscript-ai/tap
-      - blockprotocol/tap
-    install:
-      - uv
-      - ripgrep
-      - bat
-      - eza
-      - fzf
-      - zoxide
-      - walk
-      - syft
-      - yq
-      - aichat
-      - block-goose-cli
-      - gemini-cli
-      - mods
-      - ramalama
-      - llm
-      - opencode
-      - qwen-code
-      - whisper-cpp
-      # Simplified names (Taps are defined above)
-      - clio
-      - crush
+
+  # We use a custom script to install the complex AI tools
+  - type: script
+    scripts:
+      - install_ai_tools.sh
 
   - type: systemd
     system:
