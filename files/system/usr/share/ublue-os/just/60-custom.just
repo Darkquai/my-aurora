@@ -28,12 +28,12 @@ new-project name:
     @echo "✅ Project '{{name}}' ready."
 
 # @recipe
-enter-sys:
+init-enter-sys:
     distrobox enter sys-core
 
 
 # @recipe
-brew-help:
+init-brew-help:
     @echo "🍺 Homebrew Cheatsheet for Aurora"
     @echo "---------------------------------------------------"
     @echo " install <pkg>    : Install a package"
@@ -57,15 +57,7 @@ init-sys-core:
     @echo "✅ System Core Ready."
 
 # @recipe
-brew-help:
-    @echo "🍺 Homebrew Cheatsheet"
-    @echo "  brew install <pkg>   : Install a package"
-    @echo "  brew list            : List installed packages"
-    @echo "  brew update          : Update brew itself"
-    @echo "  brew upgrade         : Upgrade all packages"
-
-# @recipe
-rl-help:
+init-rl-help:
     @echo "🦙 Ramalama Cheatsheet"
     @echo "---------------------------------------------------"
     @echo "  rl pull <model>      : Download a model"
@@ -76,7 +68,7 @@ rl-help:
     @echo "  Backend: Nvidia CDI (Auto-detected)"
 
 # @recipe
-install-lmstudio:
+init-install-lmstudio:
     @echo "⬇️  Downloading LM Studio (AppImage)..."
     mkdir -p $HOME/Applications
     wget -O $HOME/Applications/LM-Studio.AppImage "https://releases.lmstudio.ai/linux/x86/0.3.6/beta/LM_Studio-0.3.6-beta-x86_64.AppImage"
@@ -84,6 +76,6 @@ install-lmstudio:
     @echo "✅ Installed to ~/Applications/LM-Studio.AppImage"
 
 # @recipe
-hive-start:
+init-hive-start:
     @echo "🐝 Awakening the Hive..."
     /usr/local/bin/start_hive.sh
