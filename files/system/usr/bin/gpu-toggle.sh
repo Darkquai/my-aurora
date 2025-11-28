@@ -2,9 +2,7 @@
 set -e
 GPU_AUDIO_ID=$(lspci -nn | grep -i nvidia | grep Audio | grep -oP '\[\K[^\]]+')
 GPU_VIDEO_ID=$(lspci -nn | grep -i nvidia | grep VGA | grep -oP '\[\K[^\]]+')
-
 MODE=$1
-
 function bind_driver() {
     local dev=$1
     local driver=$2
@@ -16,13 +14,9 @@ function bind_driver() {
     echo "0000:$bus_id" > /sys/bus/pci/drivers/$driver/bind
     echo "" > /sys/bus/pci/devices/0000:$bus_id/driver_override
 }
-
 if [ "$MODE" == "vm" ]; then
     echo "🎮 Switching to Windows VM Mode..."
-    # Stops SYSTEM services (no --user flag)
     systemctl stop scout.service oracle.service || true
-    echo "   Closing processes..."
-    # Force Linux to release the card (Monitor fix)
     fuser -k -v -9 /dev/nvidia0 >/dev/null 2>&1 || true
     systemctl stop nvidia-persistenced || true
     modprobe -r nvidia_drm nvidia_modeset nvidia_uvm nvidia || true
@@ -30,7 +24,6 @@ if [ "$MODE" == "vm" ]; then
     bind_driver "$GPU_VIDEO_ID" "vfio-pci"
     bind_driver "$GPU_AUDIO_ID" "vfio-pci"
     echo "✅ Ready for Windows."
-
 elif [ "$MODE" == "ai" ]; then
     echo "🧠 Switching to AI Mode..."
     if virsh list --state-running | grep -q "win11"; then
