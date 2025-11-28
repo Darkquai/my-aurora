@@ -73,19 +73,19 @@ init-install-lmstudio:
 # @recipe
 init-hive-start:
     @echo "🐝 Awakening the Hive..."
-    /usr/local/bin/start_hive.sh
+    /usr/bin/start_hive.sh
 
 # @recipe
 mode-vm:
-    sudo /usr/local/bin/gpu-toggle.sh vm
+    sudo /usr/bin/gpu-toggle.sh vm
 
 # @recipe
 mode-ai:
-    sudo /usr/local/bin/gpu-toggle.sh ai
+    sudo /usr/bin/gpu-toggle.sh ai
 
 # @recipe
 setup-ai:
-    sudo /usr/local/bin/manage-models.sh
+    sudo /usr/bin/manage-models.sh
 
 # @recipe
 install-darkquai-tools:
