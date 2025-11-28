@@ -13,10 +13,9 @@ modules:
 
   # 1. Bootloader Args (IOMMU Only - NO VFIO FORCE)
   - type: kargs
-    args:
+    kargs:  # <--- FIXED: Must be 'kargs', not 'args'
       - intel_iommu=on
       - iommu=pt
-      # REMOVED: rd.driver.pre=vfio_pci (Allows dynamic switching)
 
   - type: dnf
     repos:
@@ -67,12 +66,13 @@ modules:
           - org.gnome.Ptyxis
       - scope: user
 
-  - type: homebrew
+  # FIXED: Module name is 'brew' and list is 'packages'
+  - type: brew
     taps:
       - charmbracelet/tap
       - gptscript-ai/tap
       - blockprotocol/tap
-    pkgs:
+    packages:
       - uv
       - ripgrep
       - bat
