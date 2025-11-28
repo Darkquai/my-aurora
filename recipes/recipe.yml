@@ -1,5 +1,4 @@
-yaml-language-server: $schema=https://schema.blue-build.org/recipe-v1.json
-
+# yaml-language-server: $schema=https://schema.blue-build.org/recipe-v1.json
 name: my-aurora
 description: This is my personal OS image.
 
@@ -7,148 +6,99 @@ base-image: ghcr.io/ublue-os/aurora-dx-nvidia-open
 image-version: latest
 
 modules:
+  - type: files
+    files:
+      - source: system
+        destination: /
 
-type: files
-files:
+  # 1. Bootloader Args (IOMMU Only - NO VFIO FORCE)
+  - type: kargs
+    args:
+      - intel_iommu=on
+      - iommu=pt
+      # REMOVED: rd.driver.pre=vfio_pci (Allows dynamic switching)
 
-source: system
-destination: /
+  - type: dnf
+    repos:
+      copr:
+        - atim/starship
+        - hikariknight/looking-glass-kvmfr
+        - pgaskin/looking-glass-client
+    install:
+      packages:
+        - micro
+        - starship
+        - pv
+        - virt-manager
+        - gparted
+        - '@virtualization'
+        - akmod-kvmfr
+        - looking-glass-client
+        - qemu-guest-agent
+        - bridge-utils
+        - edk2-ovmf
+    remove:
+      packages:
+        - firefox
+        - firefox-langpacks
 
-1. Bootloader Args (IOMMU Only - NO VFIO FORCE)
+  - type: default-flatpaks
+    configurations:
+      - notify: true
+        scope: system
+        install:
+          - org.mozilla.firefox
+          - org.gnome.Loupe
+          - com.jeffser.Alpaca
+          - org.blender.Blender
+          - com.bambulab.BambuStudio
+          - org.freecadweb.FreeCAD
+          - org.gimp.GIMP
+          - org.videolan.VLC
+          - org.jupyter.JupyterLab
+          - io.github.shiftey.Desktop
+          - org.openscad.OpenSCAD
+          - com.wings3d.WINGS
+          - com.visualstudio.code
+          - io.podman_desktop.PodmanDesktop
+          - com.raggesilver.BlackBox
+          - org.gnome.Boxes
+          - com.github.tchx84.Flatseal
+          - org.gnome.Ptyxis
+      - scope: user
 
-type: kargs
-args:
+  - type: homebrew
+    taps:
+      - charmbracelet/tap
+      - gptscript-ai/tap
+      - blockprotocol/tap
+    pkgs:
+      - uv
+      - ripgrep
+      - bat
+      - eza
+      - fzf
+      - zoxide
+      - walk
+      - syft
+      - yq
+      - aichat
+      - block-goose-cli
+      - gemini-cli
+      - mods
+      - ramalama
+      - llm
+      - opencode
+      - qwen-code
+      - whisper-cpp
+      - clio
+      - crush
 
-intel_iommu=on
+  - type: systemd
+    system:
+      enabled:
+        - docker.service
+        - podman.socket
+        - libvirtd.service
 
-iommu=pt
-
-REMOVED: rd.driver.pre=vfio_pci (Allows dynamic switching)
-
-type: dnf
-repos:
-copr:
-- atim/starship
-- hikariknight/looking-glass-kvmfr
-- pgaskin/looking-glass-client
-install:
-packages:
-- micro
-- starship
-- pv
-- virt-manager
-- gparted
-- @virtualization
-- akmod-kvmfr
-- looking-glass-client
-- qemu-guest-agent
-- bridge-utils
-- edk2-ovmf
-remove:
-packages:
-- firefox
-- firefox-langpacks
-
-type: default-flatpaks
-configurations:
-
-notify: true
-scope: system
-install:
-
-org.mozilla.firefox
-
-org.gnome.Loupe
-
-com.jeffser.Alpaca
-
-org.blender.Blender
-
-com.bambulab.BambuStudio
-
-org.freecadweb.FreeCAD
-
-org.gimp.GIMP
-
-org.videolan.VLC
-
-org.jupyter.JupyterLab
-
-io.github.shiftey.Desktop
-
-org.openscad.OpenSCAD
-
-com.wings3d.WINGS
-
-com.visualstudio.code
-
-io.podman_desktop.PodmanDesktop
-
-com.raggesilver.BlackBox
-
-org.gnome.Boxes
-
-com.github.tchx84.Flatseal
-
-org.gnome.Ptyxis
-
-scope: user
-
-type: homebrew
-taps:
-
-charmbracelet/tap
-
-gptscript-ai/tap
-
-blockprotocol/tap
-pkgs:
-
-uv
-
-ripgrep
-
-bat
-
-eza
-
-fzf
-
-zoxide
-
-walk
-
-syft
-
-yq
-
-aichat
-
-block-goose-cli
-
-gemini-cli
-
-mods
-
-ramalama
-
-llm
-
-opencode
-
-qwen-code
-
-whisper-cpp
-
-clio
-
-crush
-
-type: systemd
-system:
-enabled:
-- docker.service
-- podman.socket
-- libvirtd.service
-
-type: signing
+  - type: signing
