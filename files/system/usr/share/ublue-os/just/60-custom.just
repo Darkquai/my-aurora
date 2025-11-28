@@ -74,3 +74,15 @@ init-install-lmstudio:
 init-hive-start:
     @echo "🐝 Awakening the Hive..."
     /usr/local/bin/start_hive.sh
+
+# @recipe
+mode-vm:
+    sudo /usr/local/bin/gpu-toggle.sh vm
+
+# @recipe
+mode-ai:
+    sudo /usr/local/bin/gpu-toggle.sh ai
+
+# @recipe
+setup-ai:
+    sudo /usr/local/bin/manage-models.sh

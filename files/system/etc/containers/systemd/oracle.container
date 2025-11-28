@@ -1,0 +1,19 @@
+[Unit]
+Description=Darkquai Oracle Core (CPU Reasoning Server)
+After=network-online.target local-fs.target
+
+[Container]
+Image=ghcr.io/ggerganov/llama.cpp:server
+PublishPort=8082:8080
+# Maps the shared system storage
+Volume=/var/lib/ai-storage/models:/models:z
+# Points to 'current_oracle.gguf' (The Symlink managed by the script)
+Exec=-m /models/current_oracle.gguf -c 32768 -t 16 -b 512 -ngl 0 --host 0.0.0.0 --port 8080 --alias oracle
+CpuShares=1024
+
+[Service]
+Nice=-10
+Restart=always
+
+[Install]
+WantedBy=default.target
