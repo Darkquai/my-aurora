@@ -1,0 +1,29 @@
+[Unit]
+Description=Darkquai OpenWebUI (Interface & RAG)
+After=network-online.target scout.service
+Wants=network-online.target
+
+[Container]
+Image=ghcr.io/open-webui/open-webui:main
+# We use Host Networking so it can easily see the Scout on localhost:8081
+Network=host
+
+# --- CONNECTIONS ---
+# Point it to the GPU Scout by default
+Environment=OLLAMA_BASE_URL=http://localhost:8081
+# Enable RAG (Retrieval Augmented Generation)
+Environment=ENABLE_RAG_WEB_SEARCH=True
+Environment=RAG_EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2
+
+# --- STORAGE ---
+# Save chats and vector db to our shared storage
+Volume=/var/lib/ai-storage/openwebui:/app/backend/data:z
+
+# --- PERFORMANCE ---
+# Allow it to restart if it crashes
+[Service]
+Restart=always
+TimeoutStartSec=300
+
+[Install]
+WantedBy=default.target

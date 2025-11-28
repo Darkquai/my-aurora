@@ -11,9 +11,9 @@ modules:
       - source: system
         destination: /
 
-  # 1. Bootloader Args (IOMMU Only - NO VFIO FORCE)
+  # 1. Bootloader Args
   - type: kargs
-    kargs:  # <--- FIXED: Must be 'kargs', not 'args'
+    kargs:
       - intel_iommu=on
       - iommu=pt
 
@@ -30,7 +30,7 @@ modules:
         - pv
         - virt-manager
         - gparted
-        - '@virtualization'
+        - @virtualization
         - akmod-kvmfr
         - looking-glass-client
         - qemu-guest-agent
@@ -66,33 +66,8 @@ modules:
           - org.gnome.Ptyxis
       - scope: user
 
-  # FIXED: Module name is 'brew' and list is 'packages'
-  - type: brew
-    taps:
-      - charmbracelet/tap
-      - gptscript-ai/tap
-      - blockprotocol/tap
-    packages:
-      - uv
-      - ripgrep
-      - bat
-      - eza
-      - fzf
-      - zoxide
-      - walk
-      - syft
-      - yq
-      - aichat
-      - block-goose-cli
-      - gemini-cli
-      - mods
-      - ramalama
-      - llm
-      - opencode
-      - qwen-code
-      - whisper-cpp
-      - clio
-      - crush
+  # NOTE: Homebrew is handled via 'ujust install-darkquai-tools' post-install
+  # to prevent build schema errors.
 
   - type: systemd
     system:

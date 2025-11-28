@@ -86,3 +86,22 @@ mode-ai:
 # @recipe
 setup-ai:
     sudo /usr/local/bin/manage-models.sh
+
+# @recipe
+install-darkquai-tools:
+    @echo "🍺 Initializing Homebrew..."
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+    @echo "🔌 Tapping Repositories..."
+    brew tap charmbracelet/tap
+    brew tap gptscript-ai/tap
+    brew tap blockprotocol/tap
+    @echo "⬇️  Installing Core Tools..."
+    brew install uv ripgrep bat eza fzf zoxide walk syft yq
+    @echo "🤖 Installing AI Suite..."
+    brew install aichat block-goose-cli gemini-cli mods ramalama llm opencode qwen-code whisper-cpp clio crush
+    @echo "✅ Workstation Tools Installed!"
+
+# @recipe
+setup-full:
+    just install-darkquai-tools
+    just setup-ai
