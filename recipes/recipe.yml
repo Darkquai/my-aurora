@@ -30,7 +30,7 @@ modules:
         - pv
         - virt-manager
         - gparted
-        - @virtualization
+        - "@virtualization"
         - akmod-kvmfr
         - looking-glass-client
         - qemu-guest-agent
