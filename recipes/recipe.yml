@@ -70,7 +70,7 @@ modules:
       - scope: user
 
    # 4. Use the dedicated Homebrew Module (NEW)
-  - type: brew
+  - type: brew@latest
     enable-system-wide: true
     packages:
       # Taps are automatically added by the module for all installed packages
