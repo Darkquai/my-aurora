@@ -1,21 +1,10 @@
 #!/bin/bash
 set -e
 echo "🍺 Installing Homebrew Packages..."
-
-# Initialize Homebrew (It is in the base image)
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-
-# Add Taps (Repositories)
 brew tap charmbracelet/tap
 brew tap gptscript-ai/tap
 brew tap blockprotocol/tap
-
-# Install Core Tools & AI Suite
-# Added 'gum' (UI tool often used with mods)
-brew install \
-    uv ripgrep bat eza fzf zoxide walk syft yq \
-    gum aichat block-goose-cli gemini-cli mods ramalama llm \
-    opencode qwen-code whisper-cpp clio crush
-
+brew install uv ripgrep bat eza fzf zoxide walk syft yq gum aichat block-goose-cli gemini-cli mods ramalama llm opencode qwen-code whisper-cpp clio crush
 brew cleanup
 echo "✅ Homebrew setup complete."
