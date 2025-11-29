@@ -23,7 +23,7 @@ fi
 # --- Create the Dynamic Greeting (MOTD) ---
 # This generates the exact table structure you requested
 echo "--> Installing Dynamic Greeting..."
-sudo tee /usr/local/bin/sys-welcome > /dev/null << 'BASH'
+sudo tee /usr/bin/sys-welcome > /dev/null << 'BASH'
 #!/bin/bash
 # Colors
 G='\033[1;32m' # Green
@@ -59,11 +59,11 @@ echo -e "${B}║    (Then run: distrobox-export --bin <cmd>)        ${B}║${NC}
 echo -e "${B}╚════════════════════════════════════════════════════╝${NC}"
 BASH
 
-sudo chmod +x /usr/local/bin/sys-welcome
+sudo chmod +x /usr/bin/sys-welcome
 
 # Add greeting to .bashrc if not present
 if ! grep -q "sys-welcome" ~/.bashrc; then
-    echo "/usr/local/bin/sys-welcome" >> ~/.bashrc
+    echo "/usr/bin/sys-welcome" >> ~/.bashrc
 fi
 
 # --- Exports ---
