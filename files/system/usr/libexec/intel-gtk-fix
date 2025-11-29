@@ -1,0 +1,6 @@
+#!/usr/bin/bash
+# Fixes graphical glitches on Intel GPUs for GTK4 apps
+if lsmod | grep -P "^(xe|i915) " > /dev/null; then
+    mkdir -p "$HOME/.config/environment.d"
+    echo "GSK_RENDERER=gl" > "$HOME/.config/environment.d/intel-gtk-fix.conf"
+fi
