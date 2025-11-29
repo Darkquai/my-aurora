@@ -1,28 +1,9 @@
-# yaml-language-server: $schema=https://schema.blue-build.org/recipe-v1.json
-name: my-aurora
-description: This is my personal OS image.
-
-base-image: ghcr.io/ublue-os/aurora-dx-nvidia-open
-image-version: latest
-
-modules:
-  - type: files
-    files:
-      - source: system
-        destination: /
-
-  # 1. Bootloader Args
-  - type: kargs
-    kargs:
-      - intel_iommu=on
-      - iommu=pt
-
-  - type: dnf
+- type: dnf
     repos:
       copr:
         - atim/starship
-        - hikariknight/looking-glass-kvmfr
-        - pgaskin/looking-glass-client
+        # - hikariknight/looking-glass-kvmfr  <-- Comment this out
+        # - pgaskin/looking-glass-client      <-- Comment this out
     install:
       packages:
         - micro
@@ -30,56 +11,9 @@ modules:
         - pv
         - virt-manager
         - gparted
-        - "@virtualization"
-        - akmod-kvmfr
-        - looking-glass-client
+        - @virtualization
+        # - akmod-kvmfr          <-- Comment this out
+        # - looking-glass-client <-- Comment this out
         - qemu-guest-agent
         - bridge-utils
         - edk2-ovmf
-    remove:
-      packages:
-        - firefox
-        - firefox-langpacks
-
-    # Add a new 'akmods' module specifically for the kernel driver compilation
-  - type: akmods
-    install:
-      packages:
-        - akmod-kvmfr # Moved here from the dnf install list
-
-  - type: default-flatpaks
-    configurations:
-      - notify: true
-        scope: system
-        install:
-          - org.mozilla.firefox
-          - org.gnome.Loupe
-          - com.jeffser.Alpaca
-          - org.blender.Blender
-          - com.bambulab.BambuStudio
-          - org.freecadweb.FreeCAD
-          - org.gimp.GIMP
-          - org.videolan.VLC
-          - org.jupyter.JupyterLab
-          - io.github.shiftey.Desktop
-          - org.openscad.OpenSCAD
-          - com.wings3d.WINGS
-          - com.visualstudio.code
-          - io.podman_desktop.PodmanDesktop
-          - com.raggesilver.BlackBox
-          - org.gnome.Boxes
-          - com.github.tchx84.Flatseal
-          - org.gnome.Ptyxis
-      - scope: user
-
-  # NOTE: Homebrew is handled via 'ujust install-darkquai-tools' post-install
-  # to prevent build schema errors.
-
-  - type: systemd
-    system:
-      enabled:
-        - docker.service
-        - podman.socket
-        - libvirtd.service
-
-  - type: signing
