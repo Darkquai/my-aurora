@@ -17,7 +17,7 @@ modules:
       - intel_iommu=on
       - iommu=pt
 
-  # 2. Core Packages (DNF)
+  # 2. Core Packages
   - type: dnf
     repos:
       copr:
@@ -30,24 +30,20 @@ modules:
         - pv
         - virt-manager
         - gparted
-        - '@virtualization'
+        - @virtualization
         - looking-glass-client
         - qemu-guest-agent
         - bridge-utils
         - edk2-ovmf
-        # Note: akmod-kvmfr is installed by the akmods module below
     remove:
       packages:
         - firefox
         - firefox-langpacks
 
-  # 3. Kernel Modules (The correct way to install KVMFR)
-  - type: akmods
-    base: main
-    install:
-      - kvmfr
+  # REMOVED BROKEN AKMODS MODULE
+  # We use the script below instead.
 
-  # 4. Flatpaks
+  # 3. Flatpaks
   - type: default-flatpaks
     configurations:
       - notify: true
@@ -73,12 +69,11 @@ modules:
           - org.gnome.Ptyxis
       - scope: user
 
-  # 5. Scripts (Homebrew & Setup)
+  # 4. Manual Scripts (The Fix)
   - type: script
     scripts:
       - /usr/local/bin/install-brew-packages.sh
-      # We don't need install_kvmfr.sh here if we use the akmods module above
-      # But we keep it if you want the manual fallback logic
+      - /usr/bin/install_kvmfr.sh  # <--- This does the work now
 
   - type: systemd
     system:
