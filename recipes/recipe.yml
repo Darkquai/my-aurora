@@ -69,33 +69,13 @@ modules:
           - org.gnome.Ptyxis
       - scope: user
 
-   # 4. Use the dedicated Homebrew Module (NEW)
-  - type: brew@latest
-    enable-system-wide: true
-    packages:
-      # Taps are automatically added by the module for all installed packages
-      - charmbracelet/tap/gum
-      - gptscript-ai/tap/aichat
-      - blockprotocol/tap/block-goose-cli
-      - blockprotocol/tap/gemini-cli
-      - blockprotocol/tap/mods
-      - blockprotocol/tap/ramalama
-      - blockprotocol/tap/llm
-      - opencode
-      - qwen-code
-      - whisper-cpp
-      - clio
-      - crush
-      # Core Tools (no taps needed)
-      - uv
-      - ripgrep
-      - bat
-      - eza
-      - fzf
-      - zoxide
-      - walk
-      - syft
-      - yq
+  # 4. Scripts (The Heavy Lifting - Homebrew installed via script now)
+  - type: script
+    scripts:
+      - install-brew-packages.sh
+      - install_kvmfr.sh        # Installs KVMFR + V4L2Loopback + SELinux Policies
+
+  - type: systemd
 
   # 5. Scripts (Only for KVMFR now) (UPDATED)
   - type: script
