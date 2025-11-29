@@ -30,7 +30,7 @@ modules:
         - pv
         - virt-manager
         - gparted
-        - @virtualization
+        - "@virtualization"   # Quoted for safety
         - looking-glass-client
         - qemu-guest-agent
         - bridge-utils
@@ -39,9 +39,6 @@ modules:
       packages:
         - firefox
         - firefox-langpacks
-
-  # REMOVED BROKEN AKMODS MODULE
-  # We use the script below instead.
 
   # 3. Flatpaks
   - type: default-flatpaks
@@ -69,11 +66,11 @@ modules:
           - org.gnome.Ptyxis
       - scope: user
 
-  # 4. Manual Scripts (The Fix)
+  # 4. Manual Scripts (Homebrew & KVMFR Driver)
   - type: script
     scripts:
       - /usr/local/bin/install-brew-packages.sh
-      - /usr/bin/install_kvmfr.sh  # <--- This does the work now
+      - /usr/bin/install_kvmfr.sh
 
   - type: systemd
     system:
