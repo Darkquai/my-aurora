@@ -5,13 +5,17 @@ echo "🍺 Installing Homebrew System..."
 # 1. Install Prerequisites
 rpm-ostree install -y git curl procps-ng
 
-# 2. Pre-create the directory to bypass root check issues
-mkdir -p /home/linuxbrew/.linuxbrew
-chown -R $(id -u):$(id -g) /home/linuxbrew
+# 2. Pre-create the directory (Atomic Safe Method)
+# We create it in /var/home because /home is a read-only symlink
+mkdir -p /var/home/linuxbrew/.linuxbrew
+# Ensure the symlink path works (in case the installer uses it)
+if [ ! -d "/home/linuxbrew" ]; then
+    ln -s /var/home/linuxbrew /home/linuxbrew
+fi
+
+chown -R $(id -u):$(id -g) /var/home/linuxbrew
 
 # 3. Install Homebrew (Unattended)
-# We use 'yes' to accept prompts and run as the current user (root)
-# CI=1 suppresses some interactive checks
 CI=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 # 4. Configure Environment
@@ -32,8 +36,8 @@ brew install uv ripgrep bat eza fzf zoxide walk syft yq \
 # 7. Cleanup
 brew cleanup
 
-# 8. Fix Permissions for the future user (UID 1000)
+# 8. Fix Permissions for UID 1000
 echo "🔒 Setting permissions for future user..."
-chown -R 1000:1000 /home/linuxbrew
+chown -R 1000:1000 /var/home/linuxbrew
 
 echo "✅ Homebrew setup complete."
