@@ -37,6 +37,9 @@ modules:
         - bridge-utils
         - edk2-ovmf
         - ptyxis
+        - gosu
+        - python3 # <-- Add Python 3
+        - git     # <-- Add Git
         # akmod-kvmfr, v4l2loopback, looking-glass-client handled by script
     remove:
       packages:
@@ -73,6 +76,7 @@ modules:
     scripts:
       - install-brew-packages.sh
       - install_kvmfr.sh        # Installs KVMFR + V4L2Loopback + SELinux Policies
+      - install_meshroom.sh
 
   - type: systemd
 
