@@ -3,8 +3,7 @@
 name: my-aurora
 description: This is my personal OS image.
 
-base-image: ghcr.io/ublue-os/aurora-dx-nvidia-open
-image-version: latest
+image: ghcr.io/ublue-os/aurora-dx-nvidia-open:43
 
 modules:
   - type: files
