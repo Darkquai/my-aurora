@@ -8,6 +8,7 @@ rpm-ostree install -y curl git make procps findutils
 
 # 2. Download and run the Homebrew installation script using a temporary file
 HB_SCRIPT="/tmp/install_homebrew.sh"
+# Ensure the FULL HTTPS URL is used here:
 curl -fsSL raw.githubusercontent.com -o "$HB_SCRIPT"
 NONINTERACTIVE=1 /bin/bash "$HB_SCRIPT"
 rm "$HB_SCRIPT" # Clean up the temp file
