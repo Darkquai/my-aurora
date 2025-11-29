@@ -21,32 +21,33 @@ modules:
 
   # 2. Core Packages
   - type: rpm-ostree
-      # The validator expects a structure that looks like this instead of your current flat structure:
-    packages:
-        # Repositories are added within the packages definition structure
-      repos:
-        - copr.fedorainfracloud.org
-        - copr.fedorainfracloud.org
-        # 'install' is likely the correct key now within 'packages'
-      install:
-        - micro
-        - starship
-        - pv
-        - virt-manager
-        - gparted
-        - "@virtualization"
-        - qemu-guest-agent
-        - bridge-utils
-        - edk2-ovmf
-        - ptyxis
-        - gosu
-        - python3 # <-- Add Python 3
-        - git     # <-- Add Git
-        # akmod-kvmfr, v4l2loopback, looking-glass-client handled by script
+    # All configurations are nested under this single module block
+    repos:
+       - https://copr.fedorainfracloud.org/coprs/atim/starship/repo/fedora-%OS_VERSION%/atim-starship-fedora-%OS_VERSION%.repo
+       - https://copr.fedorainfracloud.org/coprs/pgaskin/looking-glass-client/repo/fedora-%OS_VERSION%/pgaskin-looking-glass-client-fedora-%OS_VERSION%.repo
+    install:
+      # 'install' expects a list of packages directly, not a 'packages:' sub-key
+      - micro
+      - starship
+      - pv
+      - virt-manager
+      - gparted
+      - "@virtualization"
+      - qemu-guest-agent
+      - bridge-utils
+      - edk2-ovmf
+      - gosu
+      - python3 # <-- Add Python 3
+      - git     # <-- Add Git
+      - steam
+      - docker
+      - podman
+
+      # akmod-kvmfr, v4l2loopback, looking-glass-client handled by script
     remove:
-      packages:
-        - firefox
-        - firefox-langpacks
+      # 'remove' expects a list of packages directly, not a 'packages:' sub-key
+      - firefox
+      - firefox-langpacks
 
   # 3. Flatpaks
   - type: default-flatpaks
@@ -67,7 +68,6 @@ modules:
           - org.openscad.OpenSCAD
           - com.wings3d.WINGS
           - com.visualstudio.code
-          - io.podman_desktop.PodmanDesktop
           - com.raggesilver.BlackBox
           - org.gnome.Boxes
           - com.github.tchx84.Flatseal
@@ -80,13 +80,8 @@ modules:
       - install_kvmfr.sh        # Installs KVMFR + V4L2Loopback + SELinux Policies
       - install_meshroom.sh
 
-  - type: systemd
-
-  # 5. Scripts (Only for KVMFR now) (UPDATED)
-  - type: script
-    scripts:
-      - install_kvmfr.sh        # Installs KVMFR + V4L2Loopback + SELinux Policies
-
+  # 5. Systemd Configuration
+  # You had duplicate systemd entries, merged them here.
   - type: systemd
     system:
       enabled:
