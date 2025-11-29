@@ -21,8 +21,7 @@ modules:
     repos:
       copr:
         - atim/starship
-        - pgaskin/looking-glass-client  # Client is fine here
-        # hikariknight repo is handled by the script now
+        # REMOVED: hikariknight & pgaskin (Handled by script)
     install:
       packages:
         - micro
@@ -31,11 +30,10 @@ modules:
         - virt-manager
         - gparted
         - @virtualization
-        - looking-glass-client  # Client installs fine via DNF
+        # REMOVED: akmod-kvmfr & looking-glass-client (Handled by script)
         - qemu-guest-agent
         - bridge-utils
         - edk2-ovmf
-        # akmod-kvmfr is removed here because the script installs it
     remove:
       packages:
         - firefox
@@ -66,17 +64,15 @@ modules:
           - org.gnome.Ptyxis
       - scope: user
 
-  # 3. Install Homebrew Packages via Script
-  # (Avoids the schema validation error)
+  # 3. Install Homebrew (Script)
   - type: script
     scripts:
-      - /usr/local/bin/install-brew-packages.sh
+      - /usr/bin/install-brew-packages.sh
 
-  # 4. Install KVMFR Driver via Maintenance Script
-  # (Fixes the Fedora 43 build crash)
+  # 4. Install KVMFR Driver (Script - The smart way)
   - type: script
     scripts:
-      - install_kvmfr.sh
+      - /usr/bin/install_kvmfr.sh
 
   - type: systemd
     system:
