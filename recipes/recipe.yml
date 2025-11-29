@@ -42,12 +42,7 @@ modules:
       - steam
       - docker
       - podman
-
       # akmod-kvmfr, v4l2loopback, looking-glass-client handled by script
-    remove:
-      # 'remove' expects a list of packages directly, not a 'packages:' sub-key
-      - firefox
-      - firefox-langpacks
 
   # 3. Flatpaks
   - type: default-flatpaks
