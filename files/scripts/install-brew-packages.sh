@@ -8,6 +8,7 @@ rpm-ostree install -y git curl procps-ng
 # 2. Pre-create the directory (Atomic Safe Method)
 # We create it in /var/home because /home is a read-only symlink
 mkdir -p /var/home/linuxbrew/.linuxbrew
+
 # Ensure the symlink path works (in case the installer uses it)
 if [ ! -d "/home/linuxbrew" ]; then
     ln -s /var/home/linuxbrew /home/linuxbrew
@@ -15,6 +16,8 @@ fi
 
 chown -R $(id -u):$(id -g) /var/home/linuxbrew
 
+
+gosu builduser /tmp/scripts/install_kvmfr.sh
 # 3. Install Homebrew (Unattended)
 CI=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
