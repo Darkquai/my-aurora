@@ -69,7 +69,7 @@ modules:
   # 4. Manual Scripts (Homebrew & KVMFR Driver)
   - type: script
     scripts:
-      - /usr/local/bin/install-brew-packages.sh
+      - /usr/bin/install-brew-packages.sh  # <--- FIXED PATH (was /usr/local/bin)
       - /usr/bin/install_kvmfr.sh
 
   - type: systemd
