@@ -20,6 +20,7 @@ modules:
       # Note: We deliberately OMIT 'rd.driver.pre=vfio_pci' to allow AI mode
 
   # 2. Core Packages
+
   - type: rpm-ostree
     # All configurations are nested under this single module block
     repos:
