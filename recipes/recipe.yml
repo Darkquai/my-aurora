@@ -17,14 +17,12 @@ modules:
       - intel_iommu=on
       - iommu=pt
 
-  # 2. Standard packages (DNF)
+  # 2. Core Packages (DNF)
   - type: dnf
     repos:
       copr:
         - atim/starship
-        # We need the repo for looking-glass/kvmfr usually.
-        # Assuming hikariknight/looking-glass-kvmfr is needed:
-        - hikariknight/looking-glass-kvmfr
+        - pgaskin/looking-glass-client
     install:
       packages:
         - micro
@@ -32,53 +30,56 @@ modules:
         - pv
         - virt-manager
         - gparted
-        - "@virtualization"
+        - '@virtualization'
         - looking-glass-client
         - qemu-guest-agent
         - bridge-utils
         - edk2-ovmf
+        # Note: akmod-kvmfr is installed by the akmods module below
+    remove:
+      packages:
+        - firefox
+        - firefox-langpacks
 
-  # 3. Install KVMFR Source (The "Safe" Way)
-  # This installs the package files but prevents the build script from running as root
-  - type: script
-    name: Install KVMFR Source
-    snippets:
-      # We install the repo here just in case it wasn't in the dnf module above,
-      # but usually, it's better to put the repo in the 'dnf' module.
-      - dnf copr enable -y hikariknight/looking-glass-kvmfr
-      - dnf install -y --setopt=tsflags=noscripts akmod-kvmfr
-
-  # 4. Compile the Kernel Module
-  # This takes the source from Step 3 and builds the driver correctly
+  # 3. Kernel Modules (The correct way to install KVMFR)
   - type: akmods
     base: main
     install:
       - kvmfr
 
-  # 5. Flatpaks (This was malformed in your snippet)
-  # I moved this to its own module block where it belongs
-  - type: bling
-    install:
-      - just
-      - ublue-os-wallpapers
-
-  # Note: BlueBuild usually handles flatpaks via a 'flatpaks' module,
-  # not inside 'akmods'. Assuming you want these installed:
+  # 4. Flatpaks
   - type: default-flatpaks
-    notify: true
-    system:
-      install:
-        - com.visualstudio.code
-        - io.podman_desktop.PodmanDesktop
-        - com.raggesilver.BlackBox
-        - org.gnome.Boxes
-        - com.github.tchx84.Flatseal
-        - org.gnome.Ptyxis
-      repo-url: https://dl.flathub.org/repo/flathub.flatpakrepo
-      repo-name: flathub
-      repo-title: Flathub
+    configurations:
+      - notify: true
+        scope: system
+        install:
+          - org.mozilla.firefox
+          - org.gnome.Loupe
+          - com.jeffser.Alpaca
+          - org.blender.Blender
+          - com.bambulab.BambuStudio
+          - org.freecadweb.FreeCAD
+          - org.gimp.GIMP
+          - org.videolan.VLC
+          - org.jupyter.JupyterLab
+          - io.github.shiftey.Desktop
+          - org.openscad.OpenSCAD
+          - com.wings3d.WINGS
+          - com.visualstudio.code
+          - io.podman_desktop.PodmanDesktop
+          - com.raggesilver.BlackBox
+          - org.gnome.Boxes
+          - com.github.tchx84.Flatseal
+          - org.gnome.Ptyxis
+      - scope: user
 
-  # 6. Systemd Services
+  # 5. Scripts (Homebrew & Setup)
+  - type: script
+    scripts:
+      - /usr/local/bin/install-brew-packages.sh
+      # We don't need install_kvmfr.sh here if we use the akmods module above
+      # But we keep it if you want the manual fallback logic
+
   - type: systemd
     system:
       enabled:
