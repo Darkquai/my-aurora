@@ -6,8 +6,11 @@ echo "🍺 Setting up and Installing Homebrew Packages..."
 # 1. Install necessary dependencies for Homebrew
 rpm-ostree install -y curl git make procps findutils
 
-# 2. Run the Homebrew installation script (installs to /home/linuxbrew/.linuxbrew)
-NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL raw.githubusercontent.com)"
+# 2. Download and run the Homebrew installation script using a temporary file
+HB_SCRIPT="/tmp/install_homebrew.sh"
+curl -fsSL raw.githubusercontent.com -o "$HB_SCRIPT"
+NONINTERACTIVE=1 /bin/bash "$HB_SCRIPT"
+rm "$HB_SCRIPT" # Clean up the temp file
 
 # 3. Initialize Homebrew environment
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
