@@ -66,7 +66,6 @@ modules:
           - com.raggesilver.BlackBox
           - org.gnome.Boxes
           - com.github.tchx84.Flatseal
-          - org.gnome.Ptyxis
       - scope: user
 
   # 4. Scripts (The Heavy Lifting - Homebrew installed via script now)
