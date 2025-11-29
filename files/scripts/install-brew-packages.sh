@@ -1,41 +1,39 @@
 #!/bin/bash
-set -eux pipefail
+set -e
+echo "🍺 Installing Homebrew System..."
 
-echo "🍺 Setting up and Installing Homebrew Packages (as root)..."
+# 1. Install Prerequisites
+rpm-ostree install -y git curl procps-ng
 
-# 1. Install necessary dependencies for Homebrew
-# Since the script runs as root, commands are run directly (no sudo needed)
-rpm-ostree install -y curl git make procps findutils
+# 2. Pre-create the directory to bypass root check issues
+mkdir -p /home/linuxbrew/.linuxbrew
+chown -R $(id -u):$(id -g) /home/linuxbrew
 
-# Define the future user's UID
-TARGET_UID=1000
+# 3. Install Homebrew (Unattended)
+# We use 'yes' to accept prompts and run as the current user (root)
+# CI=1 suppresses some interactive checks
+CI=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-# 2. Download the Homebrew installation script using a temporary file
-HB_SCRIPT="/tmp/install_homebrew.sh"
-curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh -o "$HB_SCRIPT"
+# 4. Configure Environment
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
-# 3. Run the installation script (still as root, but non-interactive)
-# NOTE: The script runs and FAILS the 'sudo check', but still extracts files.
-NONINTERACTIVE=1 /bin/bash "$HB_SCRIPT" || true
-# We add '|| true' to ignore the exit code 1 error from the script stopping early.
-
-rm "$HB_SCRIPT" # Clean up the temp file
-
-# 4. Fix permissions: Change ownership from root (0) to the future user (1000)
-# Homebrew installs to /home/linuxbrew/.linuxbrew
-chown -R $TARGET_UID:$TARGET_UID /home/linuxbrew
-
-# 5. The rest of the script needs to run the 'brew' commands with the correct PATH
-export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
-
-# Add Taps (Repositories)
+# 5. Tap Repositories
+echo "🔌 Tapping Repositories..."
 brew tap charmbracelet/tap
 brew tap gptscript-ai/tap
 brew tap blockprotocol/tap
 
-# Install Core Tools & AI Suite
-brew install uv ripgrep bat eza fzf zoxide walk syft yq gum aichat block-goose-cli gemini-cli mods ramalama llm opencode qwen-code whisper-cpp clio crush
+# 6. Install Packages
+echo "⬇️  Installing Tools..."
+brew install uv ripgrep bat eza fzf zoxide walk syft yq \
+    gum aichat block-goose-cli gemini-cli mods ramalama llm \
+    opencode qwen-code whisper-cpp clio crush
 
+# 7. Cleanup
 brew cleanup
-echo "✅ Homebrew setup complete and permissions set for future user."
 
+# 8. Fix Permissions for the future user (UID 1000)
+echo "🔒 Setting permissions for future user..."
+chown -R 1000:1000 /home/linuxbrew
+
+echo "✅ Homebrew setup complete."
