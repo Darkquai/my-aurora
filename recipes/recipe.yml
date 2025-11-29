@@ -41,6 +41,12 @@ modules:
         - firefox
         - firefox-langpacks
 
+    # Add a new 'akmods' module specifically for the kernel driver compilation
+  - type: akmods
+    install:
+      packages:
+        - akmod-kvmfr # Moved here from the dnf install list
+
   - type: default-flatpaks
     configurations:
       - notify: true
