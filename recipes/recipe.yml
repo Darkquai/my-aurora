@@ -1,4 +1,5 @@
 # yaml-language-server: $schema=https://schema.blue-build.org/recipe-v1.json
+
 name: my-aurora
 description: This is my personal OS image.
 
@@ -69,7 +70,7 @@ modules:
       - scope: user
 
    # 4. Use the dedicated Homebrew Module (NEW)
-  - type: homebrew
+  - type: brew
     enable-system-wide: true
     packages:
       # Taps are automatically added by the module for all installed packages
