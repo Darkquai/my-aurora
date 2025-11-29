@@ -30,7 +30,7 @@ modules:
         - pv
         - virt-manager
         - gparted
-        - "@virtualization"   # Quoted for safety
+        - "@virtualization"
         - looking-glass-client
         - qemu-guest-agent
         - bridge-utils
@@ -66,10 +66,11 @@ modules:
           - com.github.tchx84.Flatseal
       - scope: user
 
-  # 4. Manual Scripts (Homebrew & KVMFR Driver)
+  # 4. Scripts (FIXED: Using simple filenames now)
+  # These must match the files inside the 'scripts/' folder
   - type: script
     scripts:
-      - install-brew-packages.sh  # <--- FIXED PATH (was /usr/local/bin)
+      - install-brew-packages.sh
       - install_kvmfr.sh
 
   - type: systemd
