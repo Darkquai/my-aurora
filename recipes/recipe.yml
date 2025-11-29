@@ -11,18 +11,19 @@ modules:
       - source: system
         destination: /
 
-  # 1. Bootloader Args
+  # 1. Bootloader Args (Dynamic Switching Compatible)
   - type: kargs
     kargs:
       - intel_iommu=on
       - iommu=pt
+      # Note: We deliberately OMIT 'rd.driver.pre=vfio_pci' to allow AI mode
 
   # 2. Core Packages
   - type: dnf
     repos:
       copr:
         - atim/starship
-        - pgaskin/looking-glass-client
+        # looking-glass repos are handled by script
     install:
       packages:
         - micro
@@ -31,11 +32,11 @@ modules:
         - virt-manager
         - gparted
         - "@virtualization"
-        - looking-glass-client
         - qemu-guest-agent
         - bridge-utils
         - edk2-ovmf
         - ptyxis
+        # akmod-kvmfr, v4l2loopback, looking-glass-client handled by script
     remove:
       packages:
         - firefox
@@ -64,14 +65,14 @@ modules:
           - com.raggesilver.BlackBox
           - org.gnome.Boxes
           - com.github.tchx84.Flatseal
+          - org.gnome.Ptyxis
       - scope: user
 
-  # 4. Scripts (FIXED: Using simple filenames now)
-  # These must match the files inside the 'scripts/' folder
+  # 4. Scripts (The Heavy Lifting)
   - type: script
     scripts:
       - install-brew-packages.sh
-      - install_kvmfr.sh
+      - install_kvmfr.sh        # Installs KVMFR + V4L2Loopback + SELinux Policies
 
   - type: systemd
     system:
