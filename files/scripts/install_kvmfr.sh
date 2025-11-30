@@ -1,11 +1,9 @@
 #!/bin/bash
 set -ouex pipefail
 
-echo "🔧 Building KVMFR Akmod from source (Nuclear Fix)..."
+echo "🔧 Building KVMFR Akmod (Robust Mode)..."
 
-# 1. Install Build Dependencies (Layered temporarily)
-# We use dnf here so we don't commit build tools to the final ostree if we can avoid it, 
-# but rpm-ostree is safer for the final artifact.
+# 1. Install Build Dependencies
 rpm-ostree install \
     rpm-build \
     rpmdevtools \
@@ -25,29 +23,31 @@ cd "$BUILD_DIR"
 # 3. Clone the Repository
 git clone https://github.com/HikariKnight/looking-glass-kvmfr-akmod.git .
 
-# 4. Generate Version and Source Tarball
+# 4. Generate Tarball
 VERSION=$(git describe --tags --always --long | sed 's/^v//;s/-/_/g' || echo "1.0.0")
 echo "   -> Detected Version: $VERSION"
-
-# Create tarball in /tmp to avoid "file changed" errors
 TAR_NAME="kvmfr-${VERSION}.tar.gz"
 tar -czf "/tmp/${TAR_NAME}" --exclude .git .
 
-# 5. ⚠️ AGGRESSIVE SPEC FILE REPAIR ⚠️
+# 5. ⚠️ PATCHING SPEC FILE (With Space/Tab Tolerance) ⚠️
 echo "   -> Patching Spec File..."
 
-# Force-replace Version, Release, and Source0
-sed -i "s/^Version:.*$/Version: ${VERSION}/" kvmfr.spec
-sed -i "s/^Release:.*$/Release: 1%{?dist}/" kvmfr.spec
-sed -i "s/^Source0:.*$/Source0: ${TAR_NAME}/" kvmfr.spec
+# Regex Explanation:
+# ^\s*   -> Match start of line followed by any amount of whitespace
+# Source0? -> Match 'Source' or 'Source0'
+# :.*$   -> Match the colon and everything after it
 
-# Remove broken VCS/Git tags
+sed -i -E "s/^\s*Version:.*$/Version: ${VERSION}/" kvmfr.spec
+sed -i -E "s/^\s*Release:.*$/Release: 1%{?dist}/" kvmfr.spec
+sed -i -E "s/^\s*Source0?:.*$/Source0: ${TAR_NAME}/" kvmfr.spec
+
+# Remove Git/VCS tags
 sed -i '/^VCS:/d' kvmfr.spec
 
-# DELETE the broken %changelog section entirely
+# DELETE the broken %changelog section
 sed -i '/^%changelog/,$d' kvmfr.spec
 
-# Write a clean, valid changelog
+# Write a fresh changelog
 cat <<CHANGELOG >> kvmfr.spec
 %changelog
 * $(date "+%a %b %d %Y") AutoBuilder <builder@local> - ${VERSION}-1
@@ -56,34 +56,33 @@ CHANGELOG
 
 # 6. Build RPM
 rpmdev-setuptree
+# Copy our custom tarball
 cp "/tmp/${TAR_NAME}" ~/rpmbuild/SOURCES/
+
+# FAILSAFE: Create a 'main.tar.gz' decoy just in case patching failed silently
+cp "/tmp/${TAR_NAME}" ~/rpmbuild/SOURCES/main.tar.gz
+
 cp kvmfr.spec ~/rpmbuild/SPECS/
 
 echo "🔨 Running rpmbuild..."
+# Using -bb (Build Binary) directly
 rpmbuild -bb ~/rpmbuild/SPECS/kvmfr.spec
 
-# 7. Install the Resulting RPM
+# 7. Install
 echo "📦 Installing generated RPM..."
 rpm-ostree install ~/rpmbuild/RPMS/*/akmod-kvmfr*.rpm
 
-# 8. Install V4L2Loopback (Virtual Webcam) - Since we are here
+# 8. Install V4L2 & Client
 rpm-ostree install akmod-v4l2loopback
-
-# 9. Install Looking Glass Client (From PGaskin Repo)
 wget "https://copr.fedorainfracloud.org/coprs/pgaskin/looking-glass-client/repo/fedora-rawhide/pgaskin-looking-glass-client-fedora-rawhide.repo" -O /etc/yum.repos.d/_copr_pgaskin.repo
 rpm-ostree install looking-glass-client
 rm -f /etc/yum.repos.d/_copr_pgaskin.repo
 
-# 10. Configuration & Cleanup
-# KVMFR Config
-echo "options kvmfr static_size_mb=256" > /etc/modprobe.d/kvmfr.conf
-echo 'SUBSYSTEM=="kvmfr", OWNER="1000", GROUP="kvm", MODE="0660"' > /etc/udev/rules.d/99-kvmfr.rules
-mkdir -p /etc/kvmfr/selinux/{mod,pp}
-
-# Cleanup Build Artifacts
+# 9. Cleanup
+echo "🧹 Cleaning up..."
 cd /
 rm -rf "$BUILD_DIR"
 rm -f "/tmp/${TAR_NAME}"
 rm -rf ~/rpmbuild
 
-echo "✅ KVMFR System Installed Successfully."
+echo "✅ KVMFR Installation Complete."
