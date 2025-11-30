@@ -1,38 +1,42 @@
 #!/bin/sh
 set -oeux pipefail
-echo "🖥️ Installing KVMFR & Virtualization Support..."
+
+# scripts/install_kvmfr.sh
+# Rationale: Builds the KVMFR akmod from source using the provided spec file,
+# as the F43 COPR package is unavailable.
+
 ARCH="$(rpm -E '%_arch')"
-KERNEL="$(rpm -q "${KERNEL_NAME:-kernel}" --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}')"
+KERNEL_VERSION="$(rpm -q "${KERNEL_NAME:-kernel}" --queryformat '%{VERSION}-%{RELEASE}')"
 RELEASE="$(rpm -E '%fedora')"
-if [[ "${RELEASE}" -ge 41 ]]; then
-    COPR_RELEASE="rawhide"
-else
-    COPR_RELEASE="${RELEASE}"
+
+REPO_URL="github.com"
+BUILD_DIR="/tmp/kvmfr_build"
+SPEC_FILE="kvmfr.spec" # Use the generic spec file provided in the repo
+
+echo "Building KVMFR akmod from source for Fedora ${RELEASE} Kernel ${KERNEL_VERSION}"
+
+# Install build dependencies required by the spec file (gcc, make, etc.)
+rpm-ostree install 'kernel-devel' 'rpm-build' 'wget' 'git' 'make' 'gcc'
+
+# Clone the source repository
+git clone "$REPO_URL" "$BUILD_DIR"
+cd "$BUILD_DIR"
+
+# Use rpmbuild to build the package from the spec file
+rpmbuild -bb "$SPEC_FILE"
+
+# Find the newly created RPM file path
+KMOD_RPM=$(find /root/rpmbuild/RPMS/ -name "akmod-kvmfr-*.rpm")
+
+if [ -z "$KMOD_RPM" ]; then
+    echo "Error: KVMFR RPM not found after build."
+    exit 1
 fi
-wget "https://copr.fedorainfracloud.org/coprs/hikariknight/looking-glass-kvmfr/repo/fedora-${COPR_RELEASE}/hikariknight-looking-glass-kvmfr-fedora-${COPR_RELEASE}.repo" -O /etc/yum.repos.d/_copr_hikariknight.repo
-rpm-ostree install -y akmod-kvmfr akmod-v4l2loopback
-akmods --force --kernels "${KERNEL}" --kmod kvmfr
-akmods --force --kernels "${KERNEL}" --kmod v4l2loopback
-wget "https://copr.fedorainfracloud.org/coprs/pgaskin/looking-glass-client/repo/fedora-${COPR_RELEASE}/pgaskin-looking-glass-client-fedora-${COPR_RELEASE}.repo" -O /etc/yum.repos.d/_copr_pgaskin.repo
-rpm-ostree install -y looking-glass-client
-rm -f /etc/yum.repos.d/_copr_hikariknight.repo
-rm -f /etc/yum.repos.d/_copr_pgaskin.repo
-echo "options kvmfr static_size_mb=256" > /etc/modprobe.d/kvmfr.conf
-echo 'SUBSYSTEM=="kvmfr", OWNER="1000", GROUP="kvm", MODE="0660"' > /etc/udev/rules.d/99-kvmfr.rules
-cat <<INI > /etc/looking-glass-client.ini
-[app]
-shmFile=/dev/kvmfr0
-INI
-mkdir -p /etc/kvmfr/selinux/{mod,pp}
-cat <<SELINUX > /etc/kvmfr/selinux/kvmfr.te
-module kvmfr 1.0;
-require {
-    type device_t;
-    type svirt_t;
-    class chr_file { open read write map };
-}
-allow svirt_t device_t:chr_file { open read write map };
-SELINUX
-checkmodule -M -m -o /etc/kvmfr/selinux/mod/kvmfr.mod /etc/kvmfr/selinux/kvmfr.te
-semodule_package -o /etc/kvmfr/selinux/pp/kvmfr.pp -m /etc/kvmfr/selinux/mod/kvmfr.mod
-echo "✅ Drivers & Configuration Installed."
+
+echo "Installing built KVMFR RPM: $KMOD_RPM"
+
+# Install the built RPM using rpm-ostree
+rpm-ostree install "$KMOD_RPM"
+
+# Clean up build directory
+rm -rf "$BUILD_DIR"
