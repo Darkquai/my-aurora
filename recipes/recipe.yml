@@ -43,8 +43,6 @@ modules:
       - python3 # <-- Add Python 3
       - git     # <-- Add Git
       - steam
-      - docker
-      - podman
       # akmod-kvmfr, v4l2loopback, looking-glass-client handled by script
 
   - type: files
