@@ -9,7 +9,9 @@ ARCH="$(rpm -E '%_arch')"
 KERNEL_VERSION="$(rpm -q "${KERNEL_NAME:-kernel}" --queryformat '%{VERSION}-%{RELEASE}')"
 RELEASE="$(rpm -E '%fedora')"
 
-REPO_URL="REPO_URL=https://github.com/HikariKnight/looking-glass-kvmfr-akmod.git"
+# CORRECTED LINE: Assign the URL directly to the variable
+REPO_URL="https://github.com/HikariKnight/looking-glass-kvmfr-akmod.git"
+
 BUILD_DIR="/tmp/kvmfr_build"
 SPEC_FILE="kvmfr.spec" # Use the generic spec file provided in the repo
 
