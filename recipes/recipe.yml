@@ -35,13 +35,18 @@ modules:
       - qemu-guest-agent
       - bridge-utils
       - edk2-ovmf
-      - gosu
       - python3 # <-- Add Python 3
       - git     # <-- Add Git
       - steam
       - docker
       - podman
       # akmod-kvmfr, v4l2loopback, looking-glass-client handled by script
+
+  - type: files
+    files:
+      - source: usr/local/bin/install_gosu.sh
+        destination: /usr/local/bin/install_gosu.sh
+        permissions: 0755
 
   # 3. Flatpaks
   - type: default-flatpaks
@@ -67,12 +72,14 @@ modules:
           - com.github.tchx84.Flatseal
       - scope: user
 
+
   # 4. Scripts (The Heavy Lifting - Homebrew installed via script now)
   - type: script
     scripts:
       - install-brew-packages.sh
       - install_kvmfr.sh        # Installs KVMFR + V4L2Loopback + SELinux Policies
       - install_meshroom.sh
+      - /usr/local/bin/install_gosu.sh
 
   # 5. Systemd Configuration
   # You had duplicate systemd entries, merged them here.
