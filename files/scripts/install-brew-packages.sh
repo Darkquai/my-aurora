@@ -1,9 +1,16 @@
 #!/bin/bash
-set -e
-echo "🍺 Installing Homebrew System..."
+set -eux pipefail
+echo "🍺 Setting up and Installing Homebrew Packages (using gosu)..."
 
 # 0. Ensure gosu is installed (you must install this as an earlier build step if not present)
 # For BlueBuild Fedora-based images, you may need an 'rpm-ostree install -y gosu' in an earlier module if it fails here.
+# gosu is installed here so it's immediately available
+rpm-ostree install -y curl git make procps findutils shadow-utils gosu
+
+# Define the user we want to run as (UID 1000 is the first user created on the OS)
+TARGET_UID=1000
+TARGET_USER="blue" # Ublue default user name
+
 
 # 1. Install Prerequisites
 rpm-ostree install -y git curl procps-ng
