@@ -14,7 +14,7 @@ modules:
   - type: kargs
     kargs:
       - intel_iommu=on
-      - iommu=pt deliberately OMIT 'rd.driver.pre=vfio_pci' to allow AI mode
+      - iommu=pt  # deliberately OMIT 'rd.driver.pre=vfio_pci' to allow AI mode
 
   # In your recipes/recipe.yml file
 
