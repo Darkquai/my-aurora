@@ -11,13 +11,11 @@ modules:
       - source: system
         destination: /
 
-  # 1. Bootloader Args (Dynamic Switching Compatible)
-  - type: akmods
-    install:
-      - kvmfr
+
+  - type: kargs
+    kargs:
       - intel_iommu=on
-      - iommu=pt
-      # Note: We deliberately OMIT 'rd.driver.pre=vfio_pci' to allow AI mode
+      - iommu=pt deliberately OMIT 'rd.driver.pre=vfio_pci' to allow AI mode
 
   # 2. Core Packages
   - type: rpm-ostree
@@ -26,6 +24,9 @@ modules:
       - copr.fedorainfracloud.org
       - https://copr.fedorainfracloud.org/coprs/atim/starship/repo/fedora-%OS_VERSION%/atim-starship-fedora-%OS_VERSION%.repo
       - https://copr.fedorainfracloud.org/coprs/pgaskin/looking-glass-client/repo/fedora-%OS_VERSION%/pgaskin-looking-glass-client-fedora-%OS_VERSION%.repo
+      - copr.fedorainfracloud.org
+      - copr.fedorainfracloud.org
+      - copr.fedorainfracloud.org
     install:
       # 'install' expects a list of packages directly, not a 'packages:' sub-key
       - gparted
@@ -49,9 +50,9 @@ modules:
       - looking-glass-client
       - podman
       - docker
+      - akmod-kvmfr
       #- xorg-x11-drv-nvidia
       #- nvidia-gpu-firmware
-      #- akmod-kvmfr
 
 #  - type: files
 #    files:
