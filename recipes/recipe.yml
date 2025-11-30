@@ -5,10 +5,10 @@ description: This is my personal OS image.
 
 base-image: ghcr.io/ublue-os/aurora-dx-nvidia-open
 image-version: 43
-
 modules:
   - type: files
     files:
+
       - source: system
         destination: /
 
@@ -96,3 +96,4 @@ modules:
         - libvirtd.service
 
   - type: signing
+# Trigger a new build
