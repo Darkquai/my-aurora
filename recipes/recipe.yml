@@ -8,7 +8,6 @@ image-version: 43
 modules:
   - type: files
     files:
-
       - source: system
         destination: /
 
@@ -27,6 +26,14 @@ modules:
        - https://copr.fedorainfracloud.org/coprs/pgaskin/looking-glass-client/repo/fedora-%OS_VERSION%/pgaskin-looking-glass-client-fedora-%OS_VERSION%.repo
     install:
       # 'install' expects a list of packages directly, not a 'packages:' sub-key
+      - gparted
+      - qemu-guest-agent
+      - bridge-utils
+      - edk2-ovmf
+      - python3 # <-- Add Python 3
+      - git     # <-- Add Git
+      - steam
+
       - micro
       - starship
       - pv
@@ -36,20 +43,18 @@ modules:
       - libvirt-client
       - virt-install
       - virt-manager
-      - gparted
-      - qemu-guest-agent
-      - bridge-utils
-      - edk2-ovmf
-      - python3 # <-- Add Python 3
-      - git     # <-- Add Git
-      - steam
-      # akmod-kvmfr, v4l2loopback, looking-glass-client handled by script
+      - akmod-kvmfr
+      - v4l2loopback
+      - looking-glass-client
+      - handled by script
+      - xorg-x11-drv-nvidia
+      - nvidia-gpu-firmware
 
-  - type: files
-    files:
-      - source: usr/local/bin/install_gosu.sh
-        destination: /usr/local/bin/gosu-installer.sh
-        permissions: 0755
+#  - type: files
+#    files:
+#      - source: usr/local/bin/install_gosu.sh
+#        destination: /usr/local/bin/gosu-installer.sh
+#        permissions: 0755
 
   - type: script
     scripts:
@@ -96,4 +101,3 @@ modules:
         - libvirtd.service
 
   - type: signing
-# Trigger a new build
