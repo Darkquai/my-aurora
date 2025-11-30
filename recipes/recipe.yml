@@ -30,9 +30,13 @@ modules:
       - micro
       - starship
       - pv
+      - qemu-kvm
+      - libvirt
+      - libvirt-daemon
+      - libvirt-client
+      - virt-install
       - virt-manager
       - gparted
-      - "@virtualization"
       - qemu-guest-agent
       - bridge-utils
       - edk2-ovmf
