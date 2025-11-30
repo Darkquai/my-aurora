@@ -48,10 +48,10 @@ modules:
   - type: files
     files:
       - source: usr/local/bin/install_gosu.sh
-        destination: /usr/local/bin/install_gosu.sh
+        destination: /usr/local/bin/gosu-installer.sh
         permissions: 0755
 
-  - type: scripts
+  - type: script
     scripts:
       - /usr/local/bin/gosu-installer.sh # Executes the installation script
 
