@@ -1,59 +1,42 @@
 #!/bin/bash
-set -eux pipefail
+set -ouex pipefail
 
-echo "📸 Installing Meshroom..."
+echo "📸 Installing Meshroom (Official Standalone)..."
 
-# Define install directories
+# 1. Define Variables
+# Current Stable Release as of late 2024 (2023.3.0)
+MESHROOM_VERSION="2023.3.0"
+DOWNLOAD_URL="https://github.com/alicevision/Meshroom/releases/download/v${MESHROOM_VERSION}/Meshroom-${MESHROOM_VERSION}-linux.tar.gz"
 INSTALL_DIR="/opt/Meshroom"
-ALICEVISION_DIR="$INSTALL_DIR/AliceVision"
-MESHROOM_DIR="$INSTALL_DIR/Meshroom"
-TARGET_UID=1000
+BIN_LINK="/usr/bin/meshroom"
 
+# 2. Prepare Directory
 mkdir -p "$INSTALL_DIR"
-cd "$INSTALL_DIR"
 
-# --- 1. Install AliceVision prebuilt binaries ---
-# We need to determine the correct release URL/filename for the current build OS (e.g., Fedora 40/41)
-# The user needs to verify the latest release URL/OS version compatibility from:
-# github.com
+# 3. Download and Extract
+# We strip the top level directory so it dumps directly into /opt/Meshroom
+echo "⬇️ Downloading from $DOWNLOAD_URL..."
+curl -L -C - "$DOWNLOAD_URL" | tar -xz -C "$INSTALL_DIR" --strip-components=1
 
-# Placeholder URL - User must verify the correct Linux package release URL!
-# Example using a potential Fedora-compatible binary:
-AV_URL="github.com/download/v2.5.0/AliceVision-2.5.0-linux.tar.gz"
-AV_TAR="AliceVision-2.5.0-linux.tar.gz"
+# 4. Fix Permissions
+# Ensure the user (UID 1000) can write to it if the app self-updates or writes caches
+chown -R 1000:1000 "$INSTALL_DIR"
 
-curl -fsSL "$AV_URL" -o "$AV_TAR"
-tar -xzvf "$AV_TAR"
-rm "$AV_TAR"
+# 5. Create Symlink for easy launching
+# This allows you to just type 'meshroom' in the terminal
+ln -sf "$INSTALL_DIR/meshroom" "$BIN_LINK"
 
-# The extracted folder is typically named 'AliceVision-2.5.0-linux'
-mv AliceVision-*/ "$ALICEVISION_DIR"
+# 6. Create Desktop Entry (So it shows up in your App Menu)
+mkdir -p /usr/share/applications
+cat <<EOF > /usr/share/applications/meshroom.desktop
+[Desktop Entry]
+Type=Application
+Name=Meshroom
+Comment=3D Reconstruction Software
+Icon=$INSTALL_DIR/meshroom.png
+Exec=$INSTALL_DIR/meshroom
+Terminal=false
+Categories=Graphics;3DGraphics;
+EOF
 
-
-# --- 2. Install Meshroom source code (UI) ---
-git clone --recursive https://github.com/alicevision/Meshroom.git "$MESHROOM_DIR"
-cd "$MESHROOM_DIR"
-
-# Install Python requirements system-wide within the build environment
-pip install -r requirements.txt
-
-# --- 3. Configure Environment Variables (System-wide via environment.d) ---
-
-ENV_DIR="/etc/profile.d/meshroom_env.sh"
-touch "$ENV_DIR"
-echo "export ALICEVISION_ROOT=$ALICEVISION_DIR" >> "$ENV_DIR"
-echo "export MESHROOM_NODES_PATH=$ALICEVISION_DIR/share/meshroom" >> "$ENV_DIR"
-echo "export MESHROOM_PIPELINE_TEMPLATES_PATH=$ALICEVISION_DIR/share/meshroom" >> "$ENV_DIR"
-# Add AliceVision binaries to PATH
-echo "export PATH=\$PATH:$ALICEVISION_DIR/bin" >> "$ENV_DIR"
-echo "export LD_LIBRARY_PATH=\$LD_LIBRARY_PATH:$ALICEVISION_DIR/lib" >> "$ENV_DIR"
-# Required for Qt/PySide to find plugins
-echo "export QML2_IMPORT_PATH=\$QML2_IMPORT_PATH:$ALICEVISION_DIR/qml" >> "$ENV_DIR"
-echo "export QT_PLUGIN_PATH=\$QT_PLUGIN_PATH:$ALICEVISION_DIR/plugins" >> "$ENV_DIR"
-
-
-# --- 4. Fix Permissions for the installed files ---
-# All files installed by root must be owned by the final user (UID 1000)
-chown -R $TARGET_UID:$TARGET_UID "$INSTALL_DIR"
-
-echo "✅ Meshroom Installation complete. Environment variables configured in $ENV_DIR"
+echo "✅ Meshroom Installed to $INSTALL_DIR"

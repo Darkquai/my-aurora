@@ -100,5 +100,6 @@ modules:
         - docker.service
         - podman.socket
         - libvirtd.service
+        - qemu-guest-agent
 
   - type: signing
