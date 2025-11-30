@@ -47,8 +47,6 @@ modules:
       - virt-manager
       - v4l2loopback
       - looking-glass-client
-      - podman
-      - docker
       #- akmod-kvmfr - script install now
       #- xorg-x11-drv-nvidia
       #- nvidia-gpu-firmware
