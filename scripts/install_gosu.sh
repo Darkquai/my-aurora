@@ -15,10 +15,10 @@ else
 fi
 
 GOSU_URL="github.com\$GOSU_VERSION/gosu-\$GOSU_ARCH"
-GOSU_DEST="/usr/local/bin/gosu"
+GOSU_DEST="/usr/local/bin/gosu" # <-- The destination path
 
 echo "Downloading gosu \$GOSU_VERSION for \$GOSU_ARCH"
-curl -L "\$GOSU_URL" -o "\$GOSU_DEST"
+curl -L "\$GOSU_URL" -o "\$GOSU_DEST" # <-- The download command
 
 if [ \$? -ne 0 ]; then
     echo "Failed to download gosu"
