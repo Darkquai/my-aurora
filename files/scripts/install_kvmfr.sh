@@ -27,8 +27,8 @@ git clone https://github.com/HikariKnight/looking-glass-kvmfr-akmod.git .
 VERSION=$(git describe --tags --always --long | sed 's/^v//;s/-/_/g' || echo "1.0.0")
 echo "   -> Detected Version: $VERSION"
 
-# FIX: Exclude the tarball itself to prevent 'file changed' error
-tar -czf "kvmfr-${VERSION}.tar.gz" --exclude .git --exclude "kvmfr-${VERSION}.tar.gz" .
+# FIX: Write tarball to /tmp (outside current dir) to prevent 'file changed' error
+tar -czf "/tmp/kvmfr-${VERSION}.tar.gz" --exclude .git .
 
 # Patch the spec file
 sed -i "s/Version:.*{{{ git_dir_version }}}/Version: $VERSION/" kvmfr.spec
@@ -40,7 +40,8 @@ echo "   -> Spec file sanitized."
 
 # 5. Build RPM
 rpmdev-setuptree
-cp "kvmfr-${VERSION}.tar.gz" ~/rpmbuild/SOURCES/
+# Copy the tarball from /tmp to the SOURCES directory
+cp "/tmp/kvmfr-${VERSION}.tar.gz" ~/rpmbuild/SOURCES/
 cp kvmfr.spec ~/rpmbuild/SPECS/
 
 echo "🔨 Running rpmbuild..."
@@ -53,6 +54,7 @@ rpm-ostree install ~/rpmbuild/RPMS/*/akmod-kvmfr*.rpm
 # 7. Cleanup
 cd /
 rm -rf "$BUILD_DIR"
+rm -f "/tmp/kvmfr-${VERSION}.tar.gz"
 rm -rf ~/rpmbuild
 
 echo "✅ KVMFR Akmod installed successfully."

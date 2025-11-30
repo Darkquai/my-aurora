@@ -11,6 +11,12 @@ modules:
       - source: system
         destination: /
 
+  - type: script
+    scripts:
+      - install_kvmfr.sh
+      - install-brew-packages.sh
+      - install_meshroom.sh
+
   - type: kargs
     kargs:
       - intel_iommu=on
@@ -62,11 +68,7 @@ modules:
 #      - install_gosu.sh   # Executes the installation script
 
     # --- MAIN SCRIPTS MODULE (Runs SECOND, after gosu is installed) ---
-  - type: script
-    scripts:
-      - install_kvmfr.sh
-      - install-brew-packages.sh
-      - install_meshroom.sh
+
 
   # 3. Flatpaks
   - type: default-flatpaks
