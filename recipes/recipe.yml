@@ -51,6 +51,10 @@ modules:
         destination: /usr/local/bin/install_gosu.sh
         permissions: 0755
 
+  - type: scripts
+    scripts:
+      - /usr/local/bin/gosu-installer.sh # Executes the installation script
+
   # 3. Flatpaks
   - type: default-flatpaks
     configurations:
@@ -82,7 +86,6 @@ modules:
       - install-brew-packages.sh
       - install_kvmfr.sh        # Installs KVMFR + V4L2Loopback + SELinux Policies
       - install_meshroom.sh
-      - /usr/local/bin/install_gosu.sh
 
   # 5. Systemd Configuration
   # You had duplicate systemd entries, merged them here.
