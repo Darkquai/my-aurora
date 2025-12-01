@@ -17,51 +17,40 @@ modules:
         - iommu=pt  # deliberately OMIT 'rd.driver.pre=vfio_pci' to allow AI mode
 
   - type: dnf
-    repos:
-      copr:
-        - atim/starship
-        - pgaskin/looking-glass-client
-        # We also need this one for your build to work!
-        - hikariknight/looking-glass-kvmfr
-    install:
-      packages:
-        - gparted
-        - edk2-ovmf
-        - python3
-        - git
-        - steam
-        - micro
-        - starship
-        - pv
-        # Virtualization packages
-        - akmod-kvmfr
-        - qemu-kvm
-        - qemu-guest-agent
-        - bridge-utils
-        - libvirt
-        - libvirt-daemon
-        - libvirt-client
-        - virt-install
-        - virt-manager
-        - v4l2loopback
-        - looking-glass-client
-        - "@virtualization"
+      repos:
+        copr:
+          - atim/starship
+          - pgaskin/looking-glass-client
+          # We also need this one for your build to work!
+          - hikariknight/looking-glass-kvmfr
+      install:
+        packages:
+          - '@virtualization'
+          - akmod-kvmfr
+          - qemu-kvm
+          - qemu-guest-agent
+          - bridge-utils
+          - libvirt
+          - libvirt-daemon
+          - libvirt-client
+          - virt-install
+          - virt-manager
+          - v4l2loopback
+          - looking-glass-client
+          - gparted
+          - edk2-ovmf
+          - python3
+          - git
+          - steam
+          - micro
+          - starship
+          - pv
+          # Virtualization packages
+
     remove:
       packages:
         - firefox
         - firefox-langpacks
-        - '@virtualization'
-        - akmod-kvmfr  # ript install now
-        - qemu-kvm
-        - qemu-guest-agent
-        - bridge-utils
-        - libvirt
-        - libvirt-daemon
-        - libvirt-client
-        - virt-install
-        - virt-manager
-        - v4l2loopback
-        - looking-glass-client
 
   - type: script
       scripts:
