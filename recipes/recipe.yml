@@ -23,7 +23,7 @@ modules:
       - iommu=pt  # deliberately OMIT 'rd.driver.pre=vfio_pci' to allow AI mode
 
   - type: dnf
-    inatall:
+    install:
       - '@virtualization'
       - akmod-kvmfr  # ript install now
       - qemu-kvm
