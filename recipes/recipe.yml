@@ -24,6 +24,7 @@ modules:
         - atim/starship
         - pgaskin/looking-glass-client
         - hikariknight/looking-glass-kvmfr
+
     install:
       packages:
         - '@virtualization'
