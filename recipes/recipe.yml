@@ -11,12 +11,6 @@ modules:
       - source: system
         destination: /
 
-  - type: script
-    scripts:
-      - install_kvmfr.sh
-      - install-brew-packages.sh
-      - install_meshroom.sh
-
   - type: kargs
     kargs:
       - intel_iommu=on
@@ -37,6 +31,11 @@ modules:
       - v4l2loopback
       - looking-glass-client
 
+  - type: script
+    scripts:
+      # - install_kvmfr.sh
+      - install-brew-packages.sh
+      - install_meshroom.sh
 
   # 2. Core Packages
   - type: rpm-ostree
