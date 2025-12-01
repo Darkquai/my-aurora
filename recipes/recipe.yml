@@ -13,7 +13,7 @@ modules:
         destination: /
 
   - type: kargs
-    args:
+    kargs:
       - intel_iommu=on
       - iommu=pt
       # deliberately OMIT 'rd.driver.pre=vfio_pci' to allow AI mode
