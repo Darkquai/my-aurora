@@ -13,7 +13,7 @@ modules:
         destination: /
 
   - type: kargs
-    kargs: # <--- FIXED: This must be 'args', not 'kargs'
+    kargs:
       - intel_iommu=on
       - iommu=pt
       # deliberately OMIT 'rd.driver.pre=vfio_pci' to allow AI mode
@@ -33,7 +33,7 @@ modules:
 
   # ---------------------------------------------------------
   # STAGE 2: VIRTUALIZATION STACK
-  # This is the heavy lifting. We isolate it here.
+  # This is the heavy lifting.
   # ---------------------------------------------------------
   - type: dnf
     repos:
@@ -48,7 +48,7 @@ modules:
 
   # ---------------------------------------------------------
   # STAGE 3: SYSTEM TOOLS
-  # These are simple userspace apps. Low risk of failure.
+  # Simple userspace apps.
   # ---------------------------------------------------------
   - type: dnf
     repos:
@@ -61,14 +61,15 @@ modules:
         - starship
         - pv
 
-  # -----------------------------------------------------------------------
-  # EXPERIMENTAL: Attempting to install Steam RPM in a separate transaction
-  # -----------------------------------------------------------------------
-  - type: rpm-ostree
+  # ---------------------------------------------------------
+  # STAGE 4: STEAM (RPM)
+  # Isolated in its own DNF transaction to manage dependencies.
+  # ---------------------------------------------------------
+  - type: dnf
     install:
-      - steam
-      - steam-devices
-  # -----------------------------------------------------------------------
+      packages:
+        - steam
+        - steam-devices
 
   - type: script
     scripts:
