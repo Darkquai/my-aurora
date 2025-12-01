@@ -55,6 +55,15 @@ modules:
         - firefox
         - firefox-langpacks
 
+    # -----------------------------------------------------------------------
+  # EXPERIMENTAL: Attempting to install Steam RPM in a separate transaction
+  # -----------------------------------------------------------------------
+  - type: rpm-ostree
+    install:
+      - steam
+      - steam-devices
+  # -----------------------------------------------------------------------
+
   - type: script
     scripts:
       # - install_kvmfr.sh # Removed as we use akmods now
