@@ -57,8 +57,6 @@ modules:
       - install-brew-packages.sh
       - install_meshroom.sh
 
-  # REMOVED: Broken rpm-ostree block (redundant)
-
   - type: default-flatpaks
     configurations:
       - notify: true
