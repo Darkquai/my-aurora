@@ -18,43 +18,50 @@ modules:
       - iommu=pt
       # deliberately OMIT 'rd.driver.pre=vfio_pci' to allow AI mode
 
+  # ---------------------------------------------------------
+  # STAGE 1: CLEANUP
+  # Remove Firefox first so it doesn't conflict with anything later.
+  # ---------------------------------------------------------
   - type: dnf
-    repos:
-      copr:
-        - atim/starship
-        - pgaskin/looking-glass-client
-        - hikariknight/looking-glass-kvmfr
-
     install:
       packages:
-        # --- The Fix for Firefox Removal ---
-        - noopenh264 # We install this explicitly so the system doesn't try to delete it (which causes the crash).
-        # -----------------------------------
-        - '@virtualization'
-        - akmod-kvmfr
-        - qemu-kvm
-        - qemu-guest-agent
-        - bridge-utils
-        - libvirt
-        - libvirt-daemon
-        - libvirt-client
-        - virt-install
-        - virt-manager
-        - v4l2loopback
-        - looking-glass-client
-        - gparted
-        - edk2-ovmf
-        - python3
-        - git
-        - micro
-        - starship
-        - pv
+        - noopenh264 # Prevent removal crash
     remove:
       packages:
         - firefox
         - firefox-langpacks
 
-    # -----------------------------------------------------------------------
+  # ---------------------------------------------------------
+  # STAGE 2: VIRTUALIZATION STACK
+  # This is the heavy lifting. We isolate it here.
+  # ---------------------------------------------------------
+  - type: dnf
+    repos:
+      copr:
+        - hikariknight/looking-glass-kvmfr
+        - pgaskin/looking-glass-client
+    install:
+      packages:
+        - '@virtualization'    # Pulls in qemu, libvirt, bridge-utils
+        - akmod-kvmfr          # Kernel Module
+        - looking-glass-client # Viewer App
+
+  # ---------------------------------------------------------
+  # STAGE 3: SYSTEM TOOLS
+  # These are simple userspace apps. Low risk of failure.
+  # ---------------------------------------------------------
+  - type: dnf
+    repos:
+      copr:
+        - atim/starship
+    install:
+      packages:
+        - gparted
+        - micro
+        - starship
+        - pv
+
+  # -----------------------------------------------------------------------
   # EXPERIMENTAL: Attempting to install Steam RPM in a separate transaction
   # -----------------------------------------------------------------------
   - type: rpm-ostree
