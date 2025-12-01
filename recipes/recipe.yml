@@ -69,14 +69,14 @@ modules:
       install:
         # 'install' expects a list of packages directly, not a 'packages:' sub-key
         packages:
-          - gparted
-          - edk2-ovmf
-          - python3 # <-- Add Python 3
-          - git     # <-- Add Git
-          - steam
-          - micro
-          - starship
-          - pv
+#          - gparted
+#          - edk2-ovmf
+#          - python3 # <-- Add Python 3
+#          - git     # <-- Add Git
+#          - steam
+#          - micro
+#          - starship
+#          - pv
 
           #- xorg-x11-drv-nvidia
 #- nvidia-gpu-firmware
