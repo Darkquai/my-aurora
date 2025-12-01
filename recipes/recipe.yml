@@ -22,7 +22,21 @@ modules:
       - intel_iommu=on
       - iommu=pt  # deliberately OMIT 'rd.driver.pre=vfio_pci' to allow AI mode
 
-  # In your recipes/recipe.yml file
+  - type: dnf
+    dnf:
+      - '@virtualization'
+      - akmod-kvmfr  # ript install now
+      - qemu-kvm
+      - qemu-guest-agent
+      - bridge-utils
+      - libvirt
+      - libvirt-daemon
+      - libvirt-client
+      - virt-install
+      - virt-manager
+      - v4l2loopback
+      - looking-glass-client
+
 
   # 2. Core Packages
   - type: rpm-ostree
@@ -32,28 +46,17 @@ modules:
       - https://copr.fedorainfracloud.org/coprs/atim/starship/repo/fedora-%OS_VERSION%/atim-starship-fedora-%OS_VERSION%.repo
       # Keep the looking-glass-client repo:
       - https://copr.fedorainfracloud.org/coprs/pgaskin/looking-glass-client/repo/fedora-%OS_VERSION%/pgaskin-looking-glass-client-fedora-%OS_VERSION%.repo
-    install:
+#   install:
+    rpm-ostree:
       # 'install' expects a list of packages directly, not a 'packages:' sub-key
       - gparted
-      - qemu-guest-agent
-      - bridge-utils
       - edk2-ovmf
       - python3 # <-- Add Python 3
       - git     # <-- Add Git
       - steam
-
       - micro
       - starship
       - pv
-      - qemu-kvm
-      - libvirt
-      - libvirt-daemon
-      - libvirt-client
-      - virt-install
-      - virt-manager
-      - v4l2loopback
-      - looking-glass-client
-      #- akmod-kvmfr - script install now
       #- xorg-x11-drv-nvidia
       #- nvidia-gpu-firmware
 
