@@ -46,7 +46,6 @@ modules:
         - edk2-ovmf
         - python3
         - git
-        - steam
         - micro
         - starship
         - pv
