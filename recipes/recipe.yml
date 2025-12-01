@@ -13,7 +13,7 @@ modules:
         destination: /
 
   - type: kargs
-    kargs:
+    args: # <--- FIXED: This must be 'args', not 'kargs'
       - intel_iommu=on
       - iommu=pt
       # deliberately OMIT 'rd.driver.pre=vfio_pci' to allow AI mode
@@ -27,6 +27,9 @@ modules:
 
     install:
       packages:
+        # --- The Fix for Firefox Removal ---
+        - noopenh264 # We install this explicitly so the system doesn't try to delete it (which causes the crash).
+        # -----------------------------------
         - '@virtualization'
         - akmod-kvmfr
         - qemu-kvm
