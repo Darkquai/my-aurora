@@ -5,6 +5,7 @@ description: This is my personal OS image.
 
 base-image: ghcr.io/ublue-os/aurora-dx-nvidia-open
 image-version: 43
+
 modules:
   - type: files
     files:
@@ -12,120 +13,81 @@ modules:
         destination: /
 
   - type: kargs
-      install:
-        - intel_iommu=on
-        - iommu=pt  # deliberately OMIT 'rd.driver.pre=vfio_pci' to allow AI mode
+    args:
+      - intel_iommu=on
+      - iommu=pt
+      # deliberately OMIT 'rd.driver.pre=vfio_pci' to allow AI mode
 
   - type: dnf
-      repos:
-        copr:
-          - atim/starship
-          - pgaskin/looking-glass-client
-          # We also need this one for your build to work!
-          - hikariknight/looking-glass-kvmfr
-      install:
-        packages:
-          - '@virtualization'
-          - akmod-kvmfr
-          - qemu-kvm
-          - qemu-guest-agent
-          - bridge-utils
-          - libvirt
-          - libvirt-daemon
-          - libvirt-client
-          - virt-install
-          - virt-manager
-          - v4l2loopback
-          - looking-glass-client
-          - gparted
-          - edk2-ovmf
-          - python3
-          - git
-          - steam
-          - micro
-          - starship
-          - pv
-          # Virtualization packages
-
+    repos:
+      copr:
+        - atim/starship
+        - pgaskin/looking-glass-client
+        - hikariknight/looking-glass-kvmfr
+    install:
+      packages:
+        - '@virtualization'
+        - akmod-kvmfr
+        - qemu-kvm
+        - qemu-guest-agent
+        - bridge-utils
+        - libvirt
+        - libvirt-daemon
+        - libvirt-client
+        - virt-install
+        - virt-manager
+        - v4l2loopback
+        - looking-glass-client
+        - gparted
+        - edk2-ovmf
+        - python3
+        - git
+        - steam
+        - micro
+        - starship
+        - pv
     remove:
       packages:
         - firefox
         - firefox-langpacks
 
   - type: script
-      scripts:
-        # - install_kvmfr.sh
-        - install-brew-packages.sh
-        - install_meshroom.sh
+    scripts:
+      # - install_kvmfr.sh # Removed as we use akmods now
+      - install-brew-packages.sh
+      - install_meshroom.sh
 
-  # 2. Core Packages
-  - type: rpm-ostree
-    # All configurations are nested under this single module block
-      repos:
-        # Keep the starship repo:
-        - https://copr.fedorainfracloud.org/coprs/atim/starship/repo/fedora-%OS_VERSION%/atim-starship-fedora-%OS_VERSION%.repo
-        # Keep the looking-glass-client repo:
-        - https://copr.fedorainfracloud.org/coprs/pgaskin/looking-glass-client/repo/fedora-%OS_VERSION%/pgaskin-looking-glass-client-fedora-%OS_VERSION%.repo
-      install:
-        # 'install' expects a list of packages directly, not a 'packages:' sub-key
-        packages:
-#          - gparted
-#          - edk2-ovmf
-#          - python3 # <-- Add Python 3
-#          - git     # <-- Add Git
-#          - steam
-#          - micro
-#          - starship
-#          - pv
+  # REMOVED: Broken rpm-ostree block (redundant)
 
-          #- xorg-x11-drv-nvidia
-#- nvidia-gpu-firmware
-
-#  - type: files
-#    files:
-#      - source: usr/local/bin/install_gosu.sh
-#        destination: /usr/local/bin/gosu-installer.sh
-#        permissions: 0755
-
-#  - type: script
-#    scripts:
-#      - install_gosu.sh   # Executes the installation script
-
-# --- MAIN SCRIPTS MODULE (Runs SECOND, after gosu is installed) ---
-
-
-  # 3. Flatpaks
   - type: default-flatpaks
-      configurations:
-        - notify: true
-          scope: system
-          install:
-            - org.mozilla.firefox
-            - org.gnome.Loupe
-            - com.jeffser.Alpaca
-            - org.blender.Blender
-            - com.bambulab.BambuStudio
-            - org.freecadweb.FreeCAD
-            - org.gimp.GIMP
-            - org.videolan.VLC
-            - org.jupyter.JupyterLab
-            - io.github.shiftey.Desktop
-            - org.openscad.OpenSCAD
-            - com.wings3d.WINGS
-            - com.visualstudio.code
-            - com.raggesilver.BlackBox
-            - org.gnome.Boxes
-            - com.github.tchx84.Flatseal
-          - scope: user
+    configurations:
+      - notify: true
+        scope: system
+        install:
+          - org.mozilla.firefox
+          - org.gnome.Loupe
+          - com.jeffser.Alpaca
+          - org.blender.Blender
+          - com.bambulab.BambuStudio
+          - org.freecadweb.FreeCAD
+          - org.gimp.GIMP
+          - org.videolan.VLC
+          - org.jupyter.JupyterLab
+          - io.github.shiftey.Desktop
+          - org.openscad.OpenSCAD
+          - com.wings3d.WINGS
+          - com.visualstudio.code
+          - com.raggesilver.BlackBox
+          - org.gnome.Boxes
+          - com.github.tchx84.Flatseal
+      - scope: user
 
-  # 5. Systemd Configuration
-  # You had duplicate systemd entries, merged them here.
   - type: systemd
-      system:
-        enabled:
-          - docker.service
-          - podman.socket
-          - libvirtd.service
-          - qemu-guest-agent
+    system:
+      enabled:
+        - docker.service
+        - podman.socket
+        - libvirtd.service
+        - qemu-guest-agent
 
   - type: signing
