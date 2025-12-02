@@ -1,0 +1,14 @@
+[Unit]
+Description=Darkquai AI Gateway (Ray Orchestrator)
+After=network-online.target scout.service oracle.service
+
+[Service]
+Type=simple
+# Wrap in gamemoderun to force i9-14900KS into Max Performance mode
+ExecStart=/usr/bin/gamemoderun /usr/bin/python3 /usr/share/darkquai-ai/orchestrator.py
+Restart=always
+RestartSec=10
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=multi-user.target

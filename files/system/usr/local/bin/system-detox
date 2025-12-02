@@ -1,0 +1,7 @@
+#!/bin/bash
+echo "🧹 Starting System Detox..."
+journalctl --vacuum-time=7d
+podman system prune -f
+flatpak uninstall --unused -y
+rpm-ostree cleanup -m
+echo "✨ Clean."

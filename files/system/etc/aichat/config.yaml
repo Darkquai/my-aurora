@@ -1,0 +1,9 @@
+model: local-scout
+clients:
+  - type: openai-compatible
+    name: local-scout
+    api_base: http://localhost:8081/v1
+    api_key: sk-dummy
+    models:
+      - name: local-scout
+        max_tokens: 1000

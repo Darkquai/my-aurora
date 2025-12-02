@@ -1,0 +1,6 @@
+<filesystem type="mount" accessmode="passthrough">
+  <source dir="/var/shared/3d_workstation"/>
+  <target dir="3d_share"/>
+  <driver type="virtiofs"/>
+  <binary path="/usr/libexec/virtiofsd"/>
+</filesystem>

@@ -1,0 +1,17 @@
+#!/bin/bash
+SESSION="darkquai-control"
+tmux has-session -t $SESSION 2>/dev/null
+if [ $? != 0 ]; then
+  tmux new-session -d -s $SESSION -n 'Overview'
+  tmux send-keys -t $SESSION:0 'nvtop' C-m
+  tmux split-window -h -p 40
+  tmux send-keys -t $SESSION:0 'btop' C-m
+  tmux select-pane -t 0
+  tmux split-window -v -p 40
+  tmux send-keys -t $SESSION:0 'podman logs -f scout' C-m
+  tmux select-pane -t 2
+  tmux split-window -h -p 50
+  tmux send-keys -t $SESSION:0 'podman logs -f oracle' C-m
+  tmux select-pane -t 0
+fi
+tmux attach -t $SESSION

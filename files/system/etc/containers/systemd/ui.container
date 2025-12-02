@@ -1,24 +1,19 @@
 [Unit]
-Description=Darkquai AI Interface (OpenWebUI + RAG)
-After=scout.service network-online.target local-fs.target
-Wants=scout.service network-online.target
+Description=Darkquai AI Interface
+After=scout.service network-online.target
+Wants=scout.service
 
 [Container]
 Image=ghcr.io/open-webui/open-webui:main
 PublishPort=3000:8080
-PodmanArgs=--device nvidia.com/gpu=all
-Volume=openwebui-data:/app/backend/data
-# Maps your Host Documents to the Container
-Volume=/var/home/blockedaccount/Documents/AI_Library:/data/docs:z
-Environment=OPENAI_API_BASE_URL=http://host.containers.internal:8081/v1
-Environment=OPENAI_API_KEY=sk-darkquai-local
+# Use host networking to talk to localhost:8081 easily
+Network=host
+Volume=/var/lib/ai-storage/openwebui:/app/backend/data:z
+Environment=OPENAI_API_BASE_URL=http://localhost:8081/v1
 Environment=ENABLE_RAG_WEB_SEARCH=True
-Environment=RAG_EMBEDDING_ENGINE=sentence-transformers
-Environment=RAG_EMBEDDING_MODEL=all-MiniLM-L6-v2
 
 [Service]
 Restart=always
-TimeoutStartSec=300
 
 [Install]
 WantedBy=default.target

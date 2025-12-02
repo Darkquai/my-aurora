@@ -8,7 +8,6 @@ Image=docker.io/vllm/vllm-openai:latest
 PublishPort=8081:8000
 EnvironmentFile=/etc/vllm/scout.env
 PodmanArgs=--device nvidia.com/gpu=all --shm-size=4g
-# Map cache to host so we don't redownload models on every container restart
 Volume=/var/lib/ai-storage/vllm-cache:/root/.cache/huggingface:z
 Exec=--model $MODEL_NAME --gpu-memory-utilization $GPU_MEMORY_UTILIZATION --max-num-seqs $MAX_NUM_SEQS --dtype $DTYPE --block-size $BLOCK_SIZE --port $PORT
 AutoUpdate=registry
